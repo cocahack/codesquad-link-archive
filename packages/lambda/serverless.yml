@@ -1,0 +1,61 @@
+service:
+  name: codesquad-link-archive
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+custom:
+  channelTableName: ${self:provider.stage}-channels
+  userTableName: ${self:provider.stage}-users
+  linkTableName: ${self:provider.stage}-links
+
+  dynamodb:
+    stages:
+      - dev
+      - test
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      sharedDb: true
+
+plugins:
+  - serverless-plugin-typescript
+  - serverless-jest-plugin
+  - serverless-dynamodb-local
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-northeast-2
+  state: ${opt:stage, 'dev'}
+  memorySize: 128
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/*"
+
+package:
+  exclude:
+    - node_modules/**/*
+
+functions:
+  hello:
+    handler: handler.hello
+    events:
+      - http:
+          method: get
+          path: hello
+
+resources:
+  - ${file(resources/dynamodb-table.yml)}

@@ -1,0 +1,69 @@
+Resources:
+  ChannelTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.channelTableName}
+      AttributeDefinitions:
+        - AttributeName: channelId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: channelId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  UserTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.userTableName}
+      AttributeDefinitions:
+        - AttributeName: userId
+          AttributeType: S
+      KeySchema:
+        - AttributeName: userId
+          KeyType: HASH
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5
+
+  LinkTable:
+    Type: AWS::DynamoDB::Table
+    Properties:
+      TableName: ${self:custom.linkTableName}
+      AttributeDefinitions:
+        - AttributeName: linkId
+          AttributeType: S
+        - AttributeName: linkTimestamp
+          AttributeType: S
+        - AttributeName: writerName
+          AttributeType: S
+        - AttributeName: channelName
+          AttributeType: S
+      KeySchema:
+        - AttributeName: linkId
+          KeyType: HASH
+        - AttributeName: linkTimestamp
+          KeyType: RANGE
+
+      LocalSecondaryIndexes:
+        - IndexName: writerIndex
+          KeySchema:
+            - AttributeName: linkId
+              KeyType: HASH
+            - AttributeName: writerName
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+        - IndexName: channelIndex
+          KeySchema:
+            - AttributeName: linkId
+              KeyType: HASH
+            - AttributeName: channelName
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+
+      ProvisionedThroughput:
+        ReadCapacityUnits: 5
+        WriteCapacityUnits: 5

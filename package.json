@@ -1,0 +1,8 @@
+{
+  "private": true,
+  "name": "codesquad-link-archive-aws",
+  "workspaces": [
+    "packages/*"
+  ],
+  "scripts": {}
+}
