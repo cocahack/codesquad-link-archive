@@ -24,7 +24,6 @@ jobs:
     - name: Install dependencies
       run: |
         yarn
-        yarn build --if-present
         
     - run: yarn workspace lambda test
       env:
