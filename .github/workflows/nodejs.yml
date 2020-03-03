@@ -1,0 +1,33 @@
+name: Node.js CI
+
+on:
+  pull_request:
+    branches: 
+      - master
+
+jobs:
+  build:
+    name: deploy to release(master) branch
+    runs-on: ubuntu-latest
+
+    strategy:
+      matrix:
+        node-version: [12.x]
+
+    steps:
+    - uses: actions/checkout@master
+    - name: Use Node.js ${{ matrix.node-version }}
+      uses: actions/setup-node@master
+      with:
+        node-version: ${{ matrix.node-version }}
+        
+    - name: Install dependencies
+      run: |
+        yarn
+        yarn build --if-present
+        
+    - run: yarn workspace lambda test
+      env:
+        CI: true
+        SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        AWS_REGION: ${{ secrets.AWS_REGION }}
