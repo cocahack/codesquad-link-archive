@@ -1,8 +1,9 @@
 {
   "compilerOptions": {
-    "lib": ["es2017"],
+    "lib": ["es2019"],
     "allowJs": true,
     "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "removeComments": true,
     "moduleResolution": "node",
     "module": "commonjs",

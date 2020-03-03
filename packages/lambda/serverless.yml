@@ -23,11 +23,12 @@ plugins:
   - serverless-plugin-typescript
   - serverless-jest-plugin
   - serverless-dynamodb-local
+  - serverless-dotenv-plugin
 
 provider:
   name: aws
   runtime: nodejs12.x
-  region: ap-northeast-2
+  region: ${env:AWS_REGION}
   state: ${opt:stage, 'dev'}
   memorySize: 128
   apiGateway:

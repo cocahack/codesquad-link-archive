@@ -41,23 +41,23 @@ Resources:
         - AttributeName: channelName
           AttributeType: S
       KeySchema:
-        - AttributeName: linkId
+        - AttributeName: url
           KeyType: HASH
         - AttributeName: linkTimestamp
           KeyType: RANGE
 
       LocalSecondaryIndexes:
-        - IndexName: writerIndex
+        - IndexName: userIndex
           KeySchema:
-            - AttributeName: linkId
+            - AttributeName: url
               KeyType: HASH
-            - AttributeName: writerName
+            - AttributeName: userName
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
         - IndexName: channelIndex
           KeySchema:
-            - AttributeName: linkId
+            - AttributeName: url
               KeyType: HASH
             - AttributeName: channelName
               KeyType: RANGE
