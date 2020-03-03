@@ -101,7 +101,7 @@ export declare namespace Slack {
     }
   }
 
-  namespace Message {
+  namespace Conversation {
 
     export interface ConversationHistoryResponse extends WebAPICallResult {
       messages?: SlackMessage[];
@@ -113,15 +113,17 @@ export declare namespace Slack {
 
     interface SlackMessage {
 
-      client_msg_id: string;
+      client_msg_id?: string;
       type: string;
+      subtype?: string;
+      bot_id?: string;
       text?: string;
-      user: string;
-      ts: number;
-      team: string;
+      user?: string;
+      ts: string;
+      team?: string;
       attachments?: Attachment[];
-      blocks: Block[]; 
-      reactions: Reaction[];
+      blocks?: Block[];
+      reactions?: Reaction[];
     }
 
     interface Attachment {
@@ -132,12 +134,16 @@ export declare namespace Slack {
       fallback?: string;
       thumb_url?: string;
       ts?: number;
-      from_url?: string;
+      from_url: string;
       thumb_width?: number;
       thumb_height?: number;
       service_icon?: string;
       id: number;
       original_url?: string;
+      image_url?: string;
+      image_width?: number;
+      image_height?: number;
+      image_bytes?: number;
     }
 
     interface Block {

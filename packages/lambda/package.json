@@ -4,12 +4,14 @@
   "description": "Serverless webpack example using Typescript",
   "main": "handler.js",
   "scripts": {
-    "test": "jest"
+    "test": "jest",
+    "test:cov": "jest --coverage"
   },
   "dependencies": {
     "@aws/dynamodb-data-mapper": "^0.7.3",
     "@slack/web-api": "^5.7.0",
-    "aws-sdk": "^2.630.0"
+    "aws-sdk": "^2.630.0",
+    "moment": "^2.24.0"
   },
   "devDependencies": {
     "@aws/dynamodb-data-mapper-annotations": "^0.7.3",
