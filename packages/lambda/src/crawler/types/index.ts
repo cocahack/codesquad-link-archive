@@ -174,7 +174,7 @@ export declare namespace Slack.Channel {
     channels?: SlackChannel[];
   }
 
-  export interface SlackChannel extends SlackObject{
+  export interface SlackChannel extends SlackObject {
     id: string;
     name: string;
     is_channel: boolean,
@@ -201,12 +201,14 @@ export declare namespace Slack.Channel {
     creator: string;
     last_set: number;
   }
+
   export interface Purpose {
     value: string;
     creator: string;
     last_set: number;
 
   }
+}
 
 export declare namespace Crawler {
 }
