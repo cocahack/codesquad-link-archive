@@ -1,6 +1,6 @@
 {
   "compilerOptions": {
-    "lib": ["es2019"],
+    "lib": ["es2019", "dom"],
     "allowJs": true,
     "experimentalDecorators": true,
     "emitDecoratorMetadata": true,
@@ -12,8 +12,7 @@
     "preserveConstEnums": true,
     "sourceMap": true,
     "target": "es2017",
-    "outDir": ".build",
-    "rootDir": "src"
+    "outDir": "lib"
   },
   "include": ["./**/*.ts"],
   "exclude": [
@@ -21,6 +20,8 @@
     ".serverless/**/*",
     ".webpack/**/*",
     "_warmup/**/*",
-    ".vscode/**/*"
+    ".vscode/**/*",
+    "./src/**/__tests__",
+    "./src/**/__mocks__"
   ]
 }

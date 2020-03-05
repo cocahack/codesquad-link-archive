@@ -5,9 +5,15 @@ service:
 #org: your-org-name
 
 custom:
-  channelTableName: ${self:provider.stage}-channels
-  userTableName: ${self:provider.stage}-users
-  linkTableName: ${self:provider.stage}-links
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: true
+    packager: 'yarn'
+    excludeFiles: src/**/*.test.js
+
+  channelTableName: ${opt:stage, 'dev'}-channels
+  userTableName: ${opt:stage, 'dev'}-users
+  linkTableName: ${opt:stage, 'dev'}-links
 
   dynamodb:
     stages:
@@ -20,21 +26,23 @@ custom:
       sharedDb: true
 
 plugins:
-  - serverless-plugin-typescript
   - serverless-jest-plugin
+  - serverless-webpack
   - serverless-dynamodb-local
   - serverless-dotenv-plugin
+  - serverless-plugin-monorepo
 
 provider:
   name: aws
   runtime: nodejs12.x
-  region: ${env:AWS_REGION}
+  region: ${env:REGION}
   state: ${opt:stage, 'dev'}
   memorySize: 128
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    STAGE: ${opt:stage, 'dev'}
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -44,19 +52,20 @@ provider:
         - dynamodb:PutItem
         - dynamodb:UpdateItem
         - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:BatchGetItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/*"
 
 package:
-  exclude:
-    - node_modules/**/*
+  individually: true
 
 functions:
-  hello:
-    handler: handler.hello
+  crawler:
+    handler: src/crawler/index.crawl
+    timeout: 20
     events:
-      - http:
-          method: get
-          path: hello
+      - schedule:
+          rate: cron(0 4 * * ? *)
 
 resources:
   - ${file(resources/dynamodb-table.yml)}

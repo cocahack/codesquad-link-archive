@@ -32,13 +32,13 @@ Resources:
     Properties:
       TableName: ${self:custom.linkTableName}
       AttributeDefinitions:
-        - AttributeName: linkId
+        - AttributeName: url
           AttributeType: S
         - AttributeName: linkTimestamp
           AttributeType: S
-        - AttributeName: writerName
+        - AttributeName: userId
           AttributeType: S
-        - AttributeName: channelName
+        - AttributeName: channelId
           AttributeType: S
       KeySchema:
         - AttributeName: url
@@ -51,7 +51,7 @@ Resources:
           KeySchema:
             - AttributeName: url
               KeyType: HASH
-            - AttributeName: userName
+            - AttributeName: userId
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
@@ -59,7 +59,7 @@ Resources:
           KeySchema:
             - AttributeName: url
               KeyType: HASH
-            - AttributeName: channelName
+            - AttributeName: channelId
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
