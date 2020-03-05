@@ -10,7 +10,7 @@ export class Link {
   url: string;
 
   @rangeKey()
-  linkTimestamp: Date;
+  linkTimestamp: string;
 
   @attribute({
     indexKeyConfigurations: {
@@ -31,11 +31,5 @@ export class Link {
 
   @attribute({ memberType: embed(Message) })
   message?: Message;
-
-  @attribute({ defaultProvider: () => new Date() })
-  createdAt?: Date;
-
-  @attribute({ defaultProvider: () => new Date() })
-  updatedAt?: Date;
 
 }

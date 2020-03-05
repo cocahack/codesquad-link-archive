@@ -1,6 +1,5 @@
 import { attribute, hashKey, table } from "@aws/dynamodb-data-mapper-annotations";
 import { Slack } from "../types";
-import SlackUser = Slack.User.SlackUser;
 
 @table('users')
 export class User {
@@ -14,15 +13,9 @@ export class User {
   @attribute()
   userImage?: string;
 
-  @attribute({ defaultProvider: () => new Date() })
-  createdAt: Date;
-
-  @attribute({ defaultProvider: () => new Date() })
-  updatedAt: Date;
-
-  constructor(slackUser?: SlackUser) {
+  constructor(slackUser?: Slack.User.SlackUser) {
     this.userId = slackUser?.id;
-    this.userName = slackUser?.name;
+    this.userName = slackUser?.profile?.display_name || slackUser?.name;
     this.userImage = slackUser?.profile?.image_original;
   }
 

@@ -4,7 +4,7 @@ export declare namespace Slack {
 
   export interface SlackObject {}
 
-  namespace Channel {
+  export namespace Channel {
 
     export interface ChannelListsResponse extends WebAPICallResult {
       channels?: SlackChannel[];
@@ -45,13 +45,13 @@ export declare namespace Slack {
 
   }
 
-  namespace User {
+  export namespace User {
 
-    interface UserListsResponse extends WebAPICallResult {
+    export interface UserListsResponse extends WebAPICallResult {
       members?: SlackUser[];
     }
 
-    interface SlackUser {
+    export interface SlackUser {
       id: string;
       team_id: string;
       name: string;
@@ -72,7 +72,7 @@ export declare namespace Slack {
       updated: number;
     }
 
-    interface Profile {
+    export interface Profile {
       title?: string;
       phone?: string;
       skype?: string;
@@ -101,7 +101,7 @@ export declare namespace Slack {
     }
   }
 
-  namespace Conversation {
+  export namespace Conversation {
 
     export interface ConversationHistoryResponse extends WebAPICallResult {
       messages?: SlackMessage[];
@@ -111,7 +111,7 @@ export declare namespace Slack {
       channel_actions_count?: number;
     }
 
-    interface SlackMessage {
+    export interface SlackMessage {
 
       client_msg_id?: string;
       type: string;
@@ -126,7 +126,7 @@ export declare namespace Slack {
       reactions?: Reaction[];
     }
 
-    interface Attachment {
+    export interface Attachment {
       service_name?: string;
       title?: string;
       title_link?: string;
@@ -146,20 +146,20 @@ export declare namespace Slack {
       image_bytes?: number;
     }
 
-    interface Block {
+    export interface Block {
       type: string;
       block_id: string;
       elements: Element[];
     }
 
-    interface Element {
+    export interface Element {
       type: string;
       url?: string;
       text?: string;
       elements?: Element[];
     }
-    
-    interface Reaction {
+
+    export interface Reaction {
       name: string;
       users: string[];
       count: number;
@@ -168,6 +168,45 @@ export declare namespace Slack {
   }
 
 }
+
+export declare namespace Slack.Channel {
+  export interface ChannelListsResponse extends WebAPICallResult {
+    channels?: SlackChannel[];
+  }
+
+  export interface SlackChannel extends SlackObject{
+    id: string;
+    name: string;
+    is_channel: boolean,
+    created: number,
+    is_archived: boolean,
+    is_general: boolean,
+    unlinked: number,
+    creator: string;
+    name_normalized: string;
+    is_shared: boolean;
+    is_org_shared: boolean;
+    is_member: boolean;
+    is_private: boolean;
+    is_mpim: boolean;
+    members: string[];
+    topic: Topic;
+    purpose: Purpose;
+    previous_names: string[];
+    num_members: number;
+  }
+
+  export interface Topic {
+    value: string;
+    creator: string;
+    last_set: number;
+  }
+  export interface Purpose {
+    value: string;
+    creator: string;
+    last_set: number;
+
+  }
 
 export declare namespace Crawler {
 }
