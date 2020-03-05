@@ -1,6 +1,6 @@
 import MessageDao from "./MessageDao";
 import { Link } from "./Link";
-import makeLinks from "./helper";
+import makeLinks from "./makeLinks";
 
 export default class MessageService {
 

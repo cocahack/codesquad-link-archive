@@ -12,17 +12,17 @@ const makeLinks = (slackMessage: SlackMessage, channelId: string): Link[] => {
 
   return linkElements.map((linkElement): Link => {
     const attachment = slackMessage.attachments?.find(a => a.from_url === linkElement.url);
-    return {
+    return Object.assign(new Link(), {
       channelId,
       url: linkElement.url,
       userId: slackMessage.user,
-      linkTimestamp: moment.unix(Number(slackMessage.ts)).toDate(),
+      linkTimestamp: moment.unix(Number(slackMessage.ts)).toDate().toISOString(),
       metadata: getLinkMetadataFromAttachment(attachment),
       message: {
         messageId: slackMessage.client_msg_id,
         text: slackMessage.text,
       }
-    };
+    });
   });
 };
 
