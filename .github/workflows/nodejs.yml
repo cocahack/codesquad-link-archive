@@ -7,7 +7,7 @@ on:
 
 jobs:
   build:
-    name: deploy to release(master) branch
+    name: Test and build
     runs-on: ubuntu-latest
 
     strategy:
@@ -30,3 +30,7 @@ jobs:
         CI: true
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
+
+    - name: Build projects
+      run: |
+        yarn workspace lambda deploy
