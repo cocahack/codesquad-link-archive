@@ -2253,7 +2253,7 @@ archiver@^2.1.1:
     tar-stream "^1.5.0"
     zip-stream "^1.2.0"
 
-argparse@^1.0.7:
+argparse@^1.0.10, argparse@^1.0.7:
   version "1.0.10"
   resolved "https://registry.yarnpkg.com/argparse/-/argparse-1.0.10.tgz#bcd6791ea5ae09725e17e5ad988134cd40b3d911"
   integrity sha512-o5Roy6tNG4SL/FOkCAN6RzjiakZS25RLYFrcMttJqbdd8BWrnA+fGz57iN5Pb06pvBGvl5gQ0B48dJlslXvoTg==
@@ -3668,6 +3668,14 @@ create-hmac@^1.1.0, create-hmac@^1.1.2, create-hmac@^1.1.4:
     ripemd160 "^2.0.0"
     safe-buffer "^5.0.1"
     sha.js "^2.4.8"
+
+cron-converter@0.0.12:
+  version "0.0.12"
+  resolved "https://registry.yarnpkg.com/cron-converter/-/cron-converter-0.0.12.tgz#63b44e0dc400a1d721d6ea4bb22e866c7699834c"
+  integrity sha512-JXVOF2i5AyoNoXiDpAMwSezdfP6ycQmClpQjbDEqhlVZNNFTXzd7tgn9Tl2wRm8131lYY+zcvk1yBoMj0eExlQ==
+  dependencies:
+    moment-timezone "~0.5"
+    sprintf-js "~1"
 
 cross-spawn@7.0.1, cross-spawn@^7.0.0:
   version "7.0.1"
@@ -7553,6 +7561,17 @@ loader-utils@^1.0.2, loader-utils@^1.1.0, loader-utils@^1.2.3:
     emojis-list "^3.0.0"
     json5 "^1.0.1"
 
+local-crontab@^0.1.7:
+  version "0.1.8"
+  resolved "https://registry.yarnpkg.com/local-crontab/-/local-crontab-0.1.8.tgz#7df5fa79d5b4dd089ca8ffebf939b486f24ff832"
+  integrity sha1-ffX6edW03QicqP/r+Tm0hvJP+DI=
+  dependencies:
+    argparse "^1.0.10"
+    cron-converter "0.0.12"
+    deep-equal "^1.0.1"
+    timezone-js "^0.4.13"
+    tzdata "^1.0.9"
+
 locate-path@^2.0.0:
   version "2.0.0"
   resolved "https://registry.yarnpkg.com/locate-path/-/locate-path-2.0.0.tgz#2b568b265eec944c6d9c0de9c3dbbbca0354cd8e"
@@ -8005,7 +8024,14 @@ mocha@^6.1.4:
     yargs-parser "13.1.1"
     yargs-unparser "1.6.0"
 
-moment@^2.24.0:
+moment-timezone@~0.5:
+  version "0.5.28"
+  resolved "https://registry.yarnpkg.com/moment-timezone/-/moment-timezone-0.5.28.tgz#f093d789d091ed7b055d82aa81a82467f72e4338"
+  integrity sha512-TDJkZvAyKIVWg5EtVqRzU97w0Rb0YVbfpqyjgu6GwXCAohVRqwZjf4fOzDE6p1Ch98Sro/8hQQi65WDXW5STPw==
+  dependencies:
+    moment ">= 2.9.0"
+
+"moment@>= 2.9.0", moment@^2.24.0:
   version "2.24.0"
   resolved "https://registry.yarnpkg.com/moment/-/moment-2.24.0.tgz#0d055d53f5052aa653c9f6eb68bb5d12bf5c2b5b"
   integrity sha512-bV7f+6l2QigeBBZSM/6yTNq4P2fNpSWj/0e7jQcy87A8e7o2nAfP/34/2ky5Vw4B9S446EtIhodAzkFCcR4dQg==
@@ -10576,6 +10602,13 @@ serverless-jest-plugin@^0.3.0:
     lambda-wrapper "^0.3.0"
     yaml-edit "^0.1.3"
 
+serverless-local-schedule@^0.1.6:
+  version "0.1.6"
+  resolved "https://registry.yarnpkg.com/serverless-local-schedule/-/serverless-local-schedule-0.1.6.tgz#1c2a86a9737933c72a97cfdb54b30bf861394608"
+  integrity sha512-8bYRFk3jjOg1asNo4Fiw//4FQSzMu4AqAFZAFyGruFRakiMdgyNeVPc2cenqpdyVrRSH3mju/VSGfrSlitL85w==
+  dependencies:
+    local-crontab "^0.1.7"
+
 serverless-plugin-monorepo@^0.8.0:
   version "0.8.0"
   resolved "https://registry.yarnpkg.com/serverless-plugin-monorepo/-/serverless-plugin-monorepo-0.8.0.tgz#1cba60f83df68c308ed02ec7c619806c588ee68b"
@@ -10919,6 +10952,11 @@ split-string@^3.0.1, split-string@^3.0.2:
   integrity sha512-NzNVhJDYpwceVVii8/Hu6DKfD2G+NrQHlS/V/qgv763EYudVwEcMQNxd2lh+0VrUByXN/oJkl5grOhYWvQUYiw==
   dependencies:
     extend-shallow "^3.0.0"
+
+sprintf-js@~1:
+  version "1.1.2"
+  resolved "https://registry.yarnpkg.com/sprintf-js/-/sprintf-js-1.1.2.tgz#da1765262bf8c0f571749f2ad6c26300207ae673"
+  integrity sha512-VE0SOVEHCk7Qc8ulkWw3ntAzXuqf7S2lvwQaDLRnUeIEaKNQJzV6BwmLKhOqT61aGhfUMrXeaBk+oDGCzvhcug==
 
 sprintf-js@~1.0.2:
   version "1.0.3"
@@ -11417,6 +11455,11 @@ timers-browserify@^2.0.4:
   dependencies:
     setimmediate "^1.0.4"
 
+timezone-js@^0.4.13:
+  version "0.4.13"
+  resolved "https://registry.yarnpkg.com/timezone-js/-/timezone-js-0.4.13.tgz#4fd09d951007d524db00dadb75fa5b59f9d2cbac"
+  integrity sha1-T9CdlRAH1STbANrbdfpbWfnSy6w=
+
 timsort@^0.3.0:
   version "0.3.0"
   resolved "https://registry.yarnpkg.com/timsort/-/timsort-0.3.0.tgz#405411a8e7e6339fe64db9a234de11dc31e02bd4"
@@ -11677,6 +11720,11 @@ typescript@~3.7.2:
   version "3.7.5"
   resolved "https://registry.yarnpkg.com/typescript/-/typescript-3.7.5.tgz#0692e21f65fd4108b9330238aac11dd2e177a1ae"
   integrity sha512-/P5lkRXkWHNAbcJIiHPfRoKqyd7bsyCma1hZNUGfn20qm64T6ZBlrzprymeu918H+mB/0rIg2gGK/BXkhhYgBw==
+
+tzdata@^1.0.9:
+  version "1.0.18"
+  resolved "https://registry.yarnpkg.com/tzdata/-/tzdata-1.0.18.tgz#6b5b57acee07a11ca5fca160e216f80684ca4c96"
+  integrity sha512-wHwkw0FB+OK/lgAosKogcBxwb1Njf83QkmGKlEF8m2DVid1NXVtaPVBMHvR41Zs0SVRiJ4jajQTDS5QNBCq57A==
 
 unicode-canonical-property-names-ecmascript@^1.0.4:
   version "1.0.4"

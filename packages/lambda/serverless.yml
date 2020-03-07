@@ -31,6 +31,7 @@ plugins:
   - serverless-dynamodb-local
   - serverless-dotenv-plugin
   - serverless-plugin-monorepo
+  - serverless-local-schedule
 
 provider:
   name: aws
@@ -66,6 +67,7 @@ functions:
     events:
       - schedule:
           rate: cron(0 4 * * ? *)
+          timezone: Asia/Seoul
 
 resources:
   - ${file(resources/dynamodb-table.yml)}
