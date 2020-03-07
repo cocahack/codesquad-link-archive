@@ -1,3 +1,5 @@
+name: Deploy projects
+
 on:
   push:
     branches:
@@ -27,9 +29,10 @@ jobs:
         run: |
           npm i -g serverless
 
-      - run: |
+      - name: Deploy lambda functions
+        run: |
           yarn workspace lambda deploy
         env:
           STAGE: 'prod'
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }
+          AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
