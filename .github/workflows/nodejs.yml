@@ -31,6 +31,10 @@ jobs:
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         AWS_REGION: ${{ secrets.AWS_REGION }}
 
+    - name: Install serverless CLI
+      run: |
+        npm i -g serverless
+
     - name: Build projects
       run: |
-        yarn workspace lambda deploy
+        yarn workspaces run build

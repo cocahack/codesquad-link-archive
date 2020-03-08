@@ -258,3 +258,5 @@ gen
 **/._.DS_Store
 
 **/.build
+
+**/build
