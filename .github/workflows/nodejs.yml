@@ -6,7 +6,7 @@ on:
       - master
 
 jobs:
-  build:
+  ci:
     name: Test and build
     runs-on: ubuntu-latest
 
@@ -29,8 +29,16 @@ jobs:
       env:
         CI: true
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
-        AWS_REGION: ${{ secrets.AWS_REGION }}
+        REGION: ${{ secrets.REGION }}
+
+    - name: Install serverless CLI
+      run: |
+        npm i -g serverless
 
     - name: Build projects
       run: |
-        yarn workspace lambda deploy
+        yarn workspaces run build
+      env:
+        CI: true
+        SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+        REGION: ${{ secrets.REGION }}
