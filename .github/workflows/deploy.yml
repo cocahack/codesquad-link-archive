@@ -34,5 +34,7 @@ jobs:
           yarn workspace lambda deploy
         env:
           STAGE: 'prod'
+          SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
+          REGION: ${{ secrets.REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
