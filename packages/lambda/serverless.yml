@@ -11,9 +11,9 @@ custom:
     packager: 'yarn'
     excludeFiles: src/**/*.test.js
 
-  channelTableName: ${opt:stage, 'dev'}-channels
-  userTableName: ${opt:stage, 'dev'}-users
-  linkTableName: ${opt:stage, 'dev'}-links
+  channelTableName: ${self:provider.stage}-channels
+  userTableName: ${self:provider.stage}-users
+  linkTableName: ${self:provider.stage}-links
 
   dynamodb:
     stages:
@@ -37,13 +37,13 @@ provider:
   name: aws
   runtime: nodejs12.x
   region: ${env:REGION}
-  state: ${opt:stage, 'dev'}
+  stage: ${opt:stage, 'dev'}
   memorySize: 128
   apiGateway:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    STAGE: ${opt:stage, 'dev'}
+    STAGE: ${self:provider.stage}
   iamRoleStatements:
     - Effect: Allow
       Action:
