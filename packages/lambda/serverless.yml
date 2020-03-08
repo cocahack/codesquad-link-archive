@@ -44,6 +44,8 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     STAGE: ${self:provider.stage}
+    SLACK_TOKEN: ${env:SLACK_TOKEN}
+    REGION: ${self:provider.region}
   iamRoleStatements:
     - Effect: Allow
       Action:
