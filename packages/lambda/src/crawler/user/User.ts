@@ -13,10 +13,14 @@ export class User {
   @attribute()
   userImage?: string;
 
+  @attribute()
+  email: string;
+
   constructor(slackUser?: Slack.User.SlackUser) {
     this.userId = slackUser?.id;
     this.userName = slackUser?.profile?.display_name || slackUser?.name;
     this.userImage = slackUser?.profile?.image_original;
+    this.email = slackUser?.profile?.email;
   }
 
 }

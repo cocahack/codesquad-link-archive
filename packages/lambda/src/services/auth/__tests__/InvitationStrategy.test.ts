@@ -1,9 +1,8 @@
-import { JwtStrategy } from "../strategy/JwtStrategy";
-import { InvitationPayload, InvitationStrategy } from "../strategy/InvitationStrategy";
+import { InvitationStrategy } from "../strategy/InvitationStrategy";
 
 describe('Class: InvitationStrategy', () => {
 
-  let strategy: JwtStrategy<InvitationPayload>;
+  let strategy: InvitationStrategy;
   let secret: string;
 
   beforeAll(() => {
