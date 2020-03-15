@@ -25,13 +25,19 @@ custom:
       migrate: true
       sharedDb: true
 
+  variables:
+    LINK_SECRET: ${env:LINK_SECRET}
+    AUTH_SECRET: ${env:AUTH_SECRET}
+    SLACK_TOKEN: ${env:SLACK_TOKEN}
+    BASE_URL: ${env:BASE_URL}
+
 plugins:
-  - serverless-jest-plugin
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-dotenv-plugin
   - serverless-plugin-monorepo
   - serverless-local-schedule
+  - serverless-offline
 
 provider:
   name: aws
@@ -44,7 +50,6 @@ provider:
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     STAGE: ${self:provider.stage}
-    SLACK_TOKEN: ${env:SLACK_TOKEN}
     REGION: ${self:provider.region}
     TZ: Asia/Seoul
   iamRoleStatements:
@@ -64,6 +69,7 @@ package:
   individually: true
 
 functions:
+# Crawler Services
   crawler:
     handler: src/crawler/index.crawl
     timeout: 20
@@ -71,6 +77,35 @@ functions:
       - schedule:
           rate: cron(0 4 * * ? *)
           timezone: ${self:provider.environment.TZ}
+    environment:
+      SLACK_TOKEN: ${self:custom.variables.SLACK_TOKEN}
+
+
+# Auth Services
+  register:
+    handler: src/services/auth/register.register
+    events:
+      - http: POST register
+    environment:
+      LINK_SECRET: ${self:custom.variables.LINK_SECRET}
+      SLACK_TOKEN: ${self:custom.variables.SLACK_TOKEN}
+
+  enter:
+    handler: src/services/auth/enter.enter
+    events:
+      - http:
+          path: /enter
+          method: GET
+    environment:
+      LINK_SECRET: ${self:custom.variables.LINK_SECRET}
+      AUTH_SECRET: ${self:custom.variables.AUTH_SECRET}
+
+  authorize:
+    handler: src/services/auth/authorize.authorize
+    environment:
+      AUTH_SECRET: ${self:custom.variables.AUTH_SECRET}
+
+# API Services
 
 resources:
   - ${file(resources/dynamodb-table.yml)}
