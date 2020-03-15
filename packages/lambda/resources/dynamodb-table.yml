@@ -46,6 +46,30 @@ Resources:
         - AttributeName: linkTimestamp
           KeyType: RANGE
 
+      GlobalSecondaryIndexes:
+        - IndexName: UserTimestampIndex
+          KeySchema:
+            - AttributeName: userId
+              KeyType: HASH
+            - AttributeName: linkTimestamp
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+        - IndexName: ChannelTimestampIndex
+          KeySchema:
+            - AttributeName: channelId
+              KeyType: HASH
+            - AttributeName: linkTimestamp
+              KeyType: RANGE
+          Projection:
+            ProjectionType: ALL
+          ProvisionedThroughput:
+            ReadCapacityUnits: 5
+            WriteCapacityUnits: 5
+
       LocalSecondaryIndexes:
         - IndexName: userIndex
           KeySchema:
