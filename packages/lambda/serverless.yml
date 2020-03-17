@@ -74,6 +74,9 @@ layers:
     path: ./layer/nodejs
     compatibleRuntimes:
       - nodejs12.x
+    package:
+      include:
+        - node_modules/**
 
 functions:
 # Crawler Services
