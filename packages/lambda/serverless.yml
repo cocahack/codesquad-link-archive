@@ -7,7 +7,7 @@ service:
 custom:
   webpack:
     webpackConfig: 'webpack.config.js'
-    includeModules: true
+    includeModules: false
     packager: 'yarn'
     excludeFiles: src/**/*.test.js
 
@@ -52,6 +52,7 @@ provider:
     STAGE: ${self:provider.stage}
     REGION: ${self:provider.region}
     TZ: Asia/Seoul
+    NODE_PATH: "./:/opt/node_modules"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -68,6 +69,12 @@ provider:
 package:
   individually: true
 
+layers:
+  dependencies:
+    path: ./layer/nodejs
+    compatibleRuntimes:
+      - nodejs12.x
+
 functions:
 # Crawler Services
   crawler:
@@ -79,7 +86,8 @@ functions:
           timezone: ${self:provider.environment.TZ}
     environment:
       SLACK_TOKEN: ${self:custom.variables.SLACK_TOKEN}
-
+    layers:
+      - { Ref: DependenciesLambdaLayer }
 
 # Auth Services
   register:
@@ -89,6 +97,8 @@ functions:
     environment:
       LINK_SECRET: ${self:custom.variables.LINK_SECRET}
       SLACK_TOKEN: ${self:custom.variables.SLACK_TOKEN}
+    layers:
+      - { Ref: DependenciesLambdaLayer }
 
   enter:
     handler: src/services/auth/enter.enter
@@ -99,13 +109,35 @@ functions:
     environment:
       LINK_SECRET: ${self:custom.variables.LINK_SECRET}
       AUTH_SECRET: ${self:custom.variables.AUTH_SECRET}
+    layers:
+      - { Ref: DependenciesLambdaLayer }
 
   authorize:
     handler: src/services/auth/authorize.authorize
     environment:
       AUTH_SECRET: ${self:custom.variables.AUTH_SECRET}
+    layers:
+      - { Ref: DependenciesLambdaLayer }
 
 # API Services
+#  userList:
+#    handler: src/services/api/user/list.list
+#    events:
+#      - http:
+#          path: /api/users
+#          method: GET
+#          cors: false
+#    layers:
+#      - { Ref: DependenciesLambdaLayer }
+  hello:
+    handler: src/services/handler.hello
+    events:
+      - http:
+          path: /api/hello
+          method: GET
+          cors: false
+    layers:
+      - { Ref: DependenciesLambdaLayer }
 
 resources:
   - ${file(resources/dynamodb-table.yml)}
