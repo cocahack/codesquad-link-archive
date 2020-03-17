@@ -10,8 +10,8 @@ Resources:
         - AttributeName: channelId
           KeyType: HASH
       ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
 
   UserTable:
     Type: AWS::DynamoDB::Table
@@ -24,8 +24,8 @@ Resources:
         - AttributeName: userId
           KeyType: HASH
       ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
 
   LinkTable:
     Type: AWS::DynamoDB::Table
@@ -40,6 +40,8 @@ Resources:
           AttributeType: S
         - AttributeName: channelId
           AttributeType: S
+        - AttributeName: date
+          AttributeType: S
       KeySchema:
         - AttributeName: url
           KeyType: HASH
@@ -47,28 +49,39 @@ Resources:
           KeyType: RANGE
 
       GlobalSecondaryIndexes:
-        - IndexName: UserTimestampIndex
+#        - IndexName: UserTimestampIndex
+#          KeySchema:
+#            - AttributeName: userId
+#              KeyType: HASH
+#            - AttributeName: linkTimestamp
+#              KeyType: RANGE
+#          Projection:
+#            ProjectionType: ALL
+#          ProvisionedThroughput:
+#            ReadCapacityUnits: 5
+#            WriteCapacityUnits: 5
+#        - IndexName: ChannelTimestampIndex
+#          KeySchema:
+#            - AttributeName: channelId
+#              KeyType: HASH
+#            - AttributeName: linkTimestamp
+#              KeyType: RANGE
+#          Projection:
+#            ProjectionType: ALL
+#          ProvisionedThroughput:
+#            ReadCapacityUnits: 5
+#            WriteCapacityUnits: 5
+        - IndexName: DateIndex
           KeySchema:
-            - AttributeName: userId
+            - AttributeName: date
               KeyType: HASH
             - AttributeName: linkTimestamp
               KeyType: RANGE
           Projection:
             ProjectionType: ALL
           ProvisionedThroughput:
-            ReadCapacityUnits: 5
-            WriteCapacityUnits: 5
-        - IndexName: ChannelTimestampIndex
-          KeySchema:
-            - AttributeName: channelId
-              KeyType: HASH
-            - AttributeName: linkTimestamp
-              KeyType: RANGE
-          Projection:
-            ProjectionType: ALL
-          ProvisionedThroughput:
-            ReadCapacityUnits: 5
-            WriteCapacityUnits: 5
+            ReadCapacityUnits: 1
+            WriteCapacityUnits: 1
 
       LocalSecondaryIndexes:
         - IndexName: userIndex
@@ -89,5 +102,5 @@ Resources:
             ProjectionType: ALL
 
       ProvisionedThroughput:
-        ReadCapacityUnits: 5
-        WriteCapacityUnits: 5
+        ReadCapacityUnits: 1
+        WriteCapacityUnits: 1
