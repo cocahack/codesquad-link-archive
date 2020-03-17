@@ -9,6 +9,7 @@ jobs:
   build:
     name: deploy to release(master) branch
     runs-on: ubuntu-latest
+    if: "!contains(github.event.head_commit.message, 'cd skip')"
 
     strategy:
       matrix:
@@ -38,3 +39,6 @@ jobs:
           REGION: ${{ secrets.REGION }}
           AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
           AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+          AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+          LINK_SECRET: ${{ secrets.LINK_SECRET }}
+          BASE_URL: ${{ secrets.BASE_URL }}
