@@ -1,14 +1,13 @@
-import { WebClient } from "@slack/web-api";
+import { WebClient } from '@slack/web-api';
 import { config } from 'dotenv';
-import ChannelDao from "packages/lambda/src/services/crawler/channel/ChannelDao";
-import { Slack } from "packages/lambda/src/services/crawler/types";
+import ChannelDao from '../ChannelDao';
+import { Slack } from '../../types';
 import SlackChannel = Slack.Channel.SlackChannel;
 
 /**
  * MUST connect with Internet for testing.
  */
 describe('ChannelDao', () => {
-
   let webClient: WebClient | null;
   let slackToken: string | null;
   let channelDao: ChannelDao | null;
@@ -30,8 +29,7 @@ describe('ChannelDao', () => {
       expect.arrayContaining([
         expect.objectContaining({ is_archive: true }),
         expect.objectContaining({ is_private: true }),
-      ])
+      ]),
     );
   });
-
 });

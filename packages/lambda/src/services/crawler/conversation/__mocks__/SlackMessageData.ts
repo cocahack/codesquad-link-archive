@@ -1,4 +1,4 @@
-import { Slack } from "packages/lambda/src/services/crawler/types";
+import { Slack } from '../../types';
 import SlackMessage = Slack.Conversation.SlackMessage;
 
 /**

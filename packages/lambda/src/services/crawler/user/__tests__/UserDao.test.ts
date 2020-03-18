@@ -1,7 +1,7 @@
 import { WebClient } from '@slack/web-api';
 import { config } from 'dotenv';
-import UserDao from 'packages/lambda/src/services/crawler/user/UserDao';
-import { Slack } from 'packages/lambda/src/services/crawler/types';
+import UserDao from '../UserDao';
+import { Slack } from '../../types';
 import SlackUser = Slack.User.SlackUser;
 
 /**

@@ -1,7 +1,7 @@
-import UserService from 'packages/lambda/src/services/crawler/user/UserService';
-import UserDao from 'packages/lambda/src/services/crawler/user/UserDao';
+import UserService from '../UserService';
+import UserDao from '../UserDao';
 import { WebClient } from '@slack/web-api';
-import { User } from 'packages/lambda/src/lib/model/User';
+import { User } from 'lib/model/User';
 
 jest.mock('../UserDao');
 jest.mock('@slack/web-api');
