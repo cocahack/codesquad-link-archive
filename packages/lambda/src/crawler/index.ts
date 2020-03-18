@@ -1,11 +1,10 @@
-import { APIGatewayProxyHandler } from "aws-lambda";
+import { APIGatewayProxyHandler } from 'aws-lambda';
 import Context from './configuration';
-import { User } from "./user/User";
-import { Channel } from "./channel/Channel";
+import { User } from 'lib/model/User';
+import { Channel } from 'lib/model/Channel';
 import 'source-map-support/register';
 
 export const crawl: APIGatewayProxyHandler = async (event, _context) => {
-
   await initDictionary();
 
   console.log('gathering users');
@@ -14,18 +13,29 @@ export const crawl: APIGatewayProxyHandler = async (event, _context) => {
   const channels = await Context.channelService.getLists();
 
   console.log('gathering links');
-  const promises = channels.map(channel => Context.messageService.getLists(channel.channelId));
+  const promises = channels.map(channel =>
+    Context.messageService.getLists(channel.channelId),
+  );
   const links = (await Promise.all(promises)).flat();
 
   console.log('attempt persisting all entities');
-  for await (const _persisted of Context.mapper.batchPut([...users, ...channels, ...links])) {}
+  for await (const _persisted of Context.mapper.batchPut([
+    ...users,
+    ...channels,
+    ...links,
+  ])) {
+  }
 
   return {
     statusCode: 200,
-    body: JSON.stringify({
-      message: 'function executed successfully!',
-      input: event,
-    }, null, 2),
+    body: JSON.stringify(
+      {
+        message: 'function executed successfully!',
+        input: event,
+      },
+      null,
+      2,
+    ),
   };
 };
 

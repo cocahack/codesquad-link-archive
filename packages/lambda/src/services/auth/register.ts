@@ -1,5 +1,5 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import { User } from '../api/user/User';
+import { User } from 'lib/model/User';
 import { ScanOptions } from '@aws/dynamodb-data-mapper';
 import { InvitationStrategy } from './strategy/InvitationStrategy';
 import mapper from 'lib/mapper';

@@ -1,12 +1,12 @@
-import { WebClient } from "@slack/web-api";
-import ChannelDao from "./channel/ChannelDao";
-import UserDao from "./user/UserDao";
-import MessageDao from "./conversation/MessageDao";
-import ChannelService from "./channel/ChannelService";
-import UserService from "./user/UserService";
-import MessageService from "./conversation/MessageService";
-import { DataMapper } from "@aws/dynamodb-data-mapper";
-import * as DynamoDB from "aws-sdk/clients/dynamodb";
+import { WebClient } from '@slack/web-api';
+import ChannelDao from './channel/ChannelDao';
+import UserDao from './user/UserDao';
+import MessageDao from './conversation/MessageDao';
+import ChannelService from './channel/ChannelService';
+import UserService from './user/UserService';
+import MessageService from './conversation/MessageService';
+import { DataMapper } from '@aws/dynamodb-data-mapper';
+import * as DynamoDB from 'aws-sdk/clients/dynamodb';
 
 const init = () => {
   const slackToken = process.env.SLACK_TOKEN;
@@ -38,15 +38,20 @@ const init = () => {
     mapper,
     userDictionary,
     channelDictionary,
-  }
-
+  };
 };
 
-const initDataMapper = (region) => {
+const initDataMapper = region => {
   const stage = process.env.STAGE || 'dev';
 
   return new DataMapper({
-    client: stage === 'prod' ? new DynamoDB({ region } ) : new DynamoDB({ region: 'us-east-1', endpoint: 'http://localhost:8000'}),
+    client:
+      stage === 'prod'
+        ? new DynamoDB({ region })
+        : new DynamoDB({
+            region: 'us-east-1',
+            endpoint: 'http://localhost:8000',
+          }),
     tableNamePrefix: `${stage}-`,
   });
 };

@@ -1,14 +1,13 @@
-import { WebClient } from "@slack/web-api";
+import { WebClient } from '@slack/web-api';
 import { config } from 'dotenv';
-import UserDao from "../UserDao";
-import { Slack } from "../../types";
+import UserDao from '../UserDao';
+import { Slack } from '../../types';
 import SlackUser = Slack.User.SlackUser;
 
 /**
  * MUST connect with Internet for testing.
  */
 describe('UserDao', () => {
-
   let webClient: WebClient | null;
   let slackToken: string | null;
   let userDao: UserDao | null;
@@ -30,8 +29,7 @@ describe('UserDao', () => {
       expect.arrayContaining([
         expect.objectContaining<Partial<SlackUser>>({ is_bot: true }),
         expect.objectContaining<Partial<SlackUser>>({ is_app_user: true }),
-      ])
+      ]),
     );
   });
-
 });

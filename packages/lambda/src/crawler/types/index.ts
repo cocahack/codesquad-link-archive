@@ -1,23 +1,21 @@
-import { WebAPICallResult } from "@slack/web-api";
+import { WebAPICallResult } from '@slack/web-api';
 
 export declare namespace Slack {
-
   export interface SlackObject {}
 
   export namespace Channel {
-
     export interface ChannelListsResponse extends WebAPICallResult {
       channels?: SlackChannel[];
     }
 
-    export interface SlackChannel extends SlackObject{
+    export interface SlackChannel extends SlackObject {
       id: string;
       name: string;
-      is_channel: boolean,
-      created: number,
-      is_archived: boolean,
-      is_general: boolean,
-      unlinked: number,
+      is_channel: boolean;
+      created: number;
+      is_archived: boolean;
+      is_general: boolean;
+      unlinked: number;
       creator: string;
       name_normalized: string;
       is_shared: boolean;
@@ -42,11 +40,9 @@ export declare namespace Slack {
       creator: string;
       last_set: number;
     }
-
   }
 
   export namespace User {
-
     export interface UserListsResponse extends WebAPICallResult {
       members?: SlackUser[];
     }
@@ -55,7 +51,7 @@ export declare namespace Slack {
       id: string;
       team_id: string;
       name: string;
-      deleted: false,
+      deleted: false;
       color: string;
       real_name: string;
       tz: string;
@@ -102,7 +98,6 @@ export declare namespace Slack {
   }
 
   export namespace Conversation {
-
     export interface ConversationHistoryResponse extends WebAPICallResult {
       messages?: SlackMessage[];
       has_more?: boolean;
@@ -112,7 +107,6 @@ export declare namespace Slack {
     }
 
     export interface SlackMessage {
-
       client_msg_id?: string;
       type: string;
       subtype?: string;
@@ -164,9 +158,7 @@ export declare namespace Slack {
       users: string[];
       count: number;
     }
-
   }
-
 }
 
 export declare namespace Slack.Channel {
@@ -177,11 +169,11 @@ export declare namespace Slack.Channel {
   export interface SlackChannel extends SlackObject {
     id: string;
     name: string;
-    is_channel: boolean,
-    created: number,
-    is_archived: boolean,
-    is_general: boolean,
-    unlinked: number,
+    is_channel: boolean;
+    created: number;
+    is_archived: boolean;
+    is_general: boolean;
+    unlinked: number;
     creator: string;
     name_normalized: string;
     is_shared: boolean;
@@ -206,9 +198,7 @@ export declare namespace Slack.Channel {
     value: string;
     creator: string;
     last_set: number;
-
   }
 }
 
-export declare namespace Crawler {
-}
+export declare namespace Crawler {}

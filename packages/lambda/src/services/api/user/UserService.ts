@@ -1,5 +1,5 @@
 import { DataMapper } from '@aws/dynamodb-data-mapper';
-import { User } from './User';
+import { User } from 'lib/model/User';
 
 export class UserService {
   constructor(private readonly mapper: DataMapper) {}
