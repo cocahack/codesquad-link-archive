@@ -43,3 +43,9 @@ jobs:
         CI: true
         SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
         REGION: ${{ secrets.REGION }}
+        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
+        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
+        AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
+        LINK_SECRET: ${{ secrets.LINK_SECRET }}
+        BASE_URL: ${{ secrets.BASE_URL }}
+

@@ -1,6 +1,11 @@
 import { CustomAuthorizerResult } from 'aws-lambda';
 
-export const buildIAMPolicy = (userId, effect, resource, context): CustomAuthorizerResult => {
+export const buildIAMPolicy = (
+  userId,
+  effect,
+  resource,
+  context,
+): CustomAuthorizerResult => {
   return {
     principalId: userId,
     policyDocument: {

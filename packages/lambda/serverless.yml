@@ -81,7 +81,7 @@ layers:
 functions:
 # Crawler Services
   crawler:
-    handler: src/crawler/index.crawl
+    handler: src/services/crawler/index.crawl
     timeout: 20
     events:
       - schedule:
@@ -132,13 +132,8 @@ functions:
 #          cors: false
 #    layers:
 #      - { Ref: DependenciesLambdaLayer }
-  hello:
-    handler: src/services/handler.hello
-    events:
-      - http:
-          path: /api/hello
-          method: GET
-          cors: false
+  updateDate:
+    handler: src/services/updateDate.updateDate
     layers:
       - { Ref: DependenciesLambdaLayer }
 
