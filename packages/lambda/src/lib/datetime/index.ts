@@ -1,7 +1,9 @@
-import * as moment from 'moment';
+import * as moment from 'moment-timezone';
+
+const timezone = 'Asia/Seoul';
 
 export const getDateFromUnix = (timestamp: string | number) =>
-  moment.unix(Number(timestamp)).format('YYYY-MM-DD');
+  moment.unix(Number(timestamp)).tz(timezone).format('YYYY-MM-DD');
 
 export const getDateFromISOString = (isoString: string) =>
-  moment(isoString).format('YYYY-MM-DD');
+  moment(isoString).tz(timezone).format('YYYY-MM-DD');

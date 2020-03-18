@@ -81,7 +81,7 @@ layers:
 functions:
 # Crawler Services
   crawler:
-    handler: src/crawler/index.crawl
+    handler: src/services/crawler/index.crawl
     timeout: 20
     events:
       - schedule:

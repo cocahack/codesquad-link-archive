@@ -1,6 +1,6 @@
-import { getDateFromISOString, getDateFromUnix } from '../datetime';
+import { getDateFromISOString, getDateFromUnix } from '../index';
 
-describe('Datetime functions', () => {
+describe('Datetime functions - Timezone: Asia/Seoul', () => {
   describe('Function: getDateFromUnix', () => {
     it('should return date string', function() {
       const ts = '1584055000.059800';
