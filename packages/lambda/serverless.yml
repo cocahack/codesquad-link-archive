@@ -132,13 +132,8 @@ functions:
 #          cors: false
 #    layers:
 #      - { Ref: DependenciesLambdaLayer }
-  hello:
-    handler: src/services/handler.hello
-    events:
-      - http:
-          path: /api/hello
-          method: GET
-          cors: false
+  updateDate:
+    handler: src/services/updateDate.updateDate
     layers:
       - { Ref: DependenciesLambdaLayer }
 
