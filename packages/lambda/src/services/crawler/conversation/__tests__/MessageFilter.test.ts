@@ -1,11 +1,11 @@
-import MessageFilter from '../MessageFilter';
+import MessageFilter from 'packages/lambda/src/services/crawler/conversation/MessageFilter';
 import {
   combinedMessage,
   furledMessage,
   messageWrittenByBotAndHasLinks,
   testMessages,
   unfurledMessage,
-} from '../__mocks__/SlackMessageData';
+} from 'packages/lambda/src/services/crawler/conversation/__mocks__/SlackMessageData';
 
 describe('MessageFilter', () => {
   it('should return messages have a link element', () => {

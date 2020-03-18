@@ -1,4 +1,4 @@
-import { Slack } from '../types';
+import { Slack } from 'services/crawler/types';
 import SlackMessage = Slack.Conversation.SlackMessage;
 import Block = Slack.Conversation.Block;
 import Element = Slack.Conversation.Element;

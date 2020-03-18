@@ -1,10 +1,10 @@
 import { WebClient } from '@slack/web-api';
-import ChannelDao from './channel/ChannelDao';
-import UserDao from './user/UserDao';
-import MessageDao from './conversation/MessageDao';
-import ChannelService from './channel/ChannelService';
-import UserService from './user/UserService';
-import MessageService from './conversation/MessageService';
+import ChannelDao from 'services/crawler/channel/ChannelDao';
+import UserDao from 'services/crawler/user/UserDao';
+import MessageDao from 'services/crawler/conversation/MessageDao';
+import ChannelService from 'services/crawler/channel/ChannelService';
+import UserService from 'services/crawler/user/UserService';
+import MessageService from 'services/crawler/conversation/MessageService';
 import { DataMapper } from '@aws/dynamodb-data-mapper';
 import * as DynamoDB from 'aws-sdk/clients/dynamodb';
 

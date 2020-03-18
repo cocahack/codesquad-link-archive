@@ -1,7 +1,7 @@
 import { WebClient } from "@slack/web-api";
 import { config } from 'dotenv';
-import ChannelDao from "../ChannelDao";
-import { Slack } from "../../types";
+import ChannelDao from "packages/lambda/src/services/crawler/channel/ChannelDao";
+import { Slack } from "packages/lambda/src/services/crawler/types";
 import SlackChannel = Slack.Channel.SlackChannel;
 
 /**

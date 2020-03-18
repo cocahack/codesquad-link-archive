@@ -1,6 +1,6 @@
 import { WebClient } from '@slack/web-api';
-import { Slack } from '../types';
-import UserFilter from './UserFilter';
+import { Slack } from 'services/crawler/types';
+import UserFilter from 'services/crawler/user/UserFilter';
 import UserListsResponse = Slack.User.UserListsResponse;
 
 export default class UserDao {

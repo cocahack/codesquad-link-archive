@@ -1,4 +1,4 @@
-import UserDao from './UserDao';
+import UserDao from 'services/crawler/user/UserDao';
 import { User } from 'lib/model/User';
 
 export default class UserService {

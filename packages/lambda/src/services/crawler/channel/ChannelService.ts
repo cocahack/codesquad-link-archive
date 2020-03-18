@@ -1,4 +1,4 @@
-import ChannelDao from './ChannelDao';
+import ChannelDao from 'services/crawler/channel/ChannelDao';
 import { Channel } from 'lib/model/Channel';
 
 export default class ChannelService {

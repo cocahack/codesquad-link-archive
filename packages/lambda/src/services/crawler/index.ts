@@ -1,5 +1,5 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
-import Context from './configuration';
+import Context from 'services/crawler/configuration';
 import { User } from 'lib/model/User';
 import { Channel } from 'lib/model/Channel';
 import 'source-map-support/register';

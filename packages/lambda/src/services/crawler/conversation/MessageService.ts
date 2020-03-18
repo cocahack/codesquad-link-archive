@@ -1,5 +1,5 @@
-import MessageDao from './MessageDao';
-import makeLinks from './makeLinks';
+import MessageDao from 'services/crawler/conversation/MessageDao';
+import makeLinks from 'services/crawler/conversation/makeLinks';
 import { Link } from 'lib/model/Link';
 
 export default class MessageService {

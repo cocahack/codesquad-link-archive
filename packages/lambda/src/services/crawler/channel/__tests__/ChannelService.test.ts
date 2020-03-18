@@ -1,6 +1,6 @@
-import { Channel } from 'lib/model/Channel';
-import ChannelService from "../ChannelService";
-import ChannelDao from "../ChannelDao";
+import { Channel } from 'packages/lambda/src/lib/model/Channel';
+import ChannelService from "packages/lambda/src/services/crawler/channel/ChannelService";
+import ChannelDao from "packages/lambda/src/services/crawler/channel/ChannelDao";
 import { WebClient } from "@slack/web-api";
 jest.mock('../ChannelDao');
 jest.mock('@slack/web-api');

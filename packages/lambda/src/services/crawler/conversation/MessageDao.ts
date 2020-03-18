@@ -1,8 +1,8 @@
 import { ConversationsHistoryArguments, WebClient } from '@slack/web-api';
-import { Slack } from '../types';
+import { Slack } from 'services/crawler/types';
 import * as moment from 'moment';
 import ConversationHistoryResponse = Slack.Conversation.ConversationHistoryResponse;
-import MessageFilter from './MessageFilter';
+import MessageFilter from 'services/crawler/conversation/MessageFilter';
 
 export default class MessageDao {
   constructor(private readonly webClient: WebClient) {}

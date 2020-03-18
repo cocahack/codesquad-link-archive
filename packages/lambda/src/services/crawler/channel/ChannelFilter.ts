@@ -1,4 +1,4 @@
-import { Slack } from '../types';
+import { Slack } from 'services/crawler/types';
 import SlackChannel = Slack.Channel.SlackChannel;
 
 export default class ChannelFilter {

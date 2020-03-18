@@ -1,4 +1,4 @@
-import { Slack } from '../types';
+import { Slack } from 'services/crawler/types';
 import SlackUser = Slack.User.SlackUser;
 
 export default class UserFilter {
