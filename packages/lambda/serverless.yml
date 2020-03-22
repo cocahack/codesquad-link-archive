@@ -123,17 +123,45 @@ functions:
       - { Ref: DependenciesLambdaLayer }
 
 # API Services
-#  userList:
-#    handler: src/services/api/user/list.list
-#    events:
-#      - http:
-#          path: /api/users
-#          method: GET
-#          cors: false
-#    layers:
-#      - { Ref: DependenciesLambdaLayer }
-  updateDate:
-    handler: src/services/updateDate.updateDate
+  getUsers:
+    handler: src/services/api/user/list.list
+    events:
+      - http:
+          path: /api/users
+          method: GET
+          cors: false
+          authorizer:
+            type: request
+            name: authorize
+    layers:
+      - { Ref: DependenciesLambdaLayer }
+
+  getChannels:
+    handler: src/services/api/channel/list.list
+    events:
+      - http:
+          path: /api/channels
+          method: GET
+          cors: false
+          authorizer:
+            type: request
+            name: authorize
+    layers:
+      - { Ref: DependenciesLambdaLayer }
+
+  getLinks:
+    handler: src/services/api/link/get.get
+    events:
+      - http:
+          path: /api/links
+          method: GET
+          cors: false
+          request:
+            querystrings:
+              date: false
+          authorizer:
+            type: request
+            name: authorize
     layers:
       - { Ref: DependenciesLambdaLayer }
 

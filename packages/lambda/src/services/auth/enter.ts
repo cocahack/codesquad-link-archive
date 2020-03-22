@@ -26,7 +26,7 @@ export const enter: APIGatewayProxyHandler = async (event, _context) => {
     return {
       statusCode: 302,
       headers: {
-        Location: `${baseUrl}/dev/api`,
+        Location: `${baseUrl}`,
         'Set-Cookie': `token=${token}; Max-Age=${600 * 10}; HttpOnly`,
       },
       body: null,
