@@ -82,7 +82,7 @@ functions:
 # Crawler Services
   crawler:
     handler: src/services/crawler/index.crawl
-    timeout: 20
+    timeout: 60
     events:
       - schedule:
           rate: cron(0 4 * * ? *)
@@ -100,6 +100,7 @@ functions:
     environment:
       LINK_SECRET: ${self:custom.variables.LINK_SECRET}
       SLACK_TOKEN: ${self:custom.variables.SLACK_TOKEN}
+      BASE_URL: ${self:custom.variables.BASE_URL}
     layers:
       - { Ref: DependenciesLambdaLayer }
 
@@ -112,6 +113,7 @@ functions:
     environment:
       LINK_SECRET: ${self:custom.variables.LINK_SECRET}
       AUTH_SECRET: ${self:custom.variables.AUTH_SECRET}
+      BASE_URL: ${self:custom.variables.BASE_URL}
     layers:
       - { Ref: DependenciesLambdaLayer }
 

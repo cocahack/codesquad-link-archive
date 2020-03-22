@@ -6,6 +6,7 @@ import { buildIAMPolicy } from 'lib/utils';
 import mapper from 'lib/mapper';
 
 export const authorize: CustomAuthorizerHandler = async (event, _context) => {
+  console.log('methodArn: ', event.methodArn);
   if (event.type !== 'REQUEST') {
     throw new Error('This authorizer only accepts REQUEST type.');
   }
@@ -16,6 +17,7 @@ export const authorize: CustomAuthorizerHandler = async (event, _context) => {
 
   try {
     const payload = await authStrategy.verify(token);
+    console.log('Token verified.');
 
     return buildIAMPolicy(payload.id, 'Allow', event.methodArn, payload);
   } catch (e) {
