@@ -11,7 +11,7 @@ export const authorize: CustomAuthorizerHandler = async (event, _context) => {
     throw new Error('This authorizer only accepts REQUEST type.');
   }
 
-  const token = getCookie(event.headers['Cookie'], 'token');
+  const token = getCookie(event.headers['Cookie'] || event.headers['cookie'], 'token');
   const userService = new UserService(mapper);
   const authStrategy = new AuthStrategy(userService, process.env.AUTH_SECRET);
 
