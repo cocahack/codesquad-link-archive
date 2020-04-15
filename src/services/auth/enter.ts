@@ -9,7 +9,7 @@ export const enter: APIGatewayProxyHandler = async (event, _context) => {
   const userService = new UserService(mapper);
   const invitationStrategy = new InvitationStrategy(process.env.LINK_SECRET);
   const authStrategy = new AuthStrategy(userService, process.env.AUTH_SECRET);
-  const baseUrl = process.env.BASE_URL;
+  const clientBaseUrl = process.env.CLIENT_BASE_URL;
 
   try {
 
@@ -26,7 +26,7 @@ export const enter: APIGatewayProxyHandler = async (event, _context) => {
     return {
       statusCode: 302,
       headers: {
-        Location: `${baseUrl}`,
+        Location: `${clientBaseUrl}`,
         'Set-Cookie': `token=${token}; Max-Age=${600 * 10}; HttpOnly`,
       },
       body: null,
