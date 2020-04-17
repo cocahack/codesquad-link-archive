@@ -30,7 +30,7 @@ jobs:
 
     - name: Install serverless CLI
       run: |
-        npm i -g serverless
+        npm i -g serverless@1.65.0
 
     - name: Build test
       run: |

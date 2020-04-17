@@ -28,7 +28,7 @@ jobs:
 
       - name: Install Serverless CLI
         run: |
-          npm i -g serverless
+          npm i -g serverless@1.65.0
 
       - name: Deploy lambda functions
         run: |
