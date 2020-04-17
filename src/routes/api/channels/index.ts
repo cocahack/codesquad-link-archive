@@ -12,11 +12,14 @@ channels.get('/', authorized, async (ctx) => {
     for await (const user of mapper.scan(Channel)) {
       channels.push(user);
     }
+
+    ctx.status = 200;
     ctx.body = {
       channels,
     };
   } catch (e) {
-    ctx.throw(503, e);
+    console.error(e);
+    ctx.throw(500, e);
   }
 });
 

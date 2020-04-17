@@ -15,7 +15,7 @@ custom:
   userTableName: ${self:provider.stage}-users
   linkTableName: ${self:provider.stage}-links
 
-  cralwerFailureTopicName: ${self:provider.stage}-crawler-failure-alarm
+  cralwerFailureTopicName: crawler-failure-alarm-${self:provider.stage}
   cralwerFailureEndpoint: ${ssm:/squadref-v1/failure-endpoint}
 
   dynamodb:
@@ -33,6 +33,7 @@ plugins:
   - serverless-dynamodb-local
   - serverless-local-schedule
   - serverless-offline
+  - serverless-offline-ssm
 
 provider:
   name: aws
@@ -44,14 +45,15 @@ provider:
     minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
   environment:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
-    STAGE: ${self:provider.stage}
-    REGION: ${self:provider.region}
-    INVITATION_SECRET: ${ssm:/squadref-v1/invitation-secret}
     AUTH_SECRET: ${ssm:/squadref-v1/auth-secret}
     BASE_URL: ${ssm:/squadref-v1/base-url}
     CLIENT_BASE_URL: ${ssm:/squadref-v1/client-base-url}
+    ENTER_PATH: ${ssm:/squadref-v1/enter-path}
+    INVITATION_SECRET: ${ssm:/squadref-v1/invitation-secret}
     NODE_PATH: ${ssm:/squadref-v1/node-path}
+    REGION: ${self:provider.region}
     SLACK_TOKEN: ${ssm:/squadref-v1/slack-token}
+    STAGE: ${self:provider.stage}
     TZ: Asia/Seoul
   iamRoleStatements:
     - Effect: Allow
@@ -65,6 +67,11 @@ provider:
         - dynamodb:BatchWriteItem
         - dynamodb:BatchGetItem
       Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/*"
+    - Effect: Allow
+      Action:
+        - sns:Publish
+      Resource:
+        - { Ref: CrawlerFailureTopic }
 
 package:
   individually: true
@@ -89,7 +96,7 @@ functions:
           timezone: ${self:provider.environment.TZ}
     destinations:
       onFailure:
-        - Ref: CrawlerFailureTopic
+        - { Ref: CrawlerFailureTopic }
     layers:
       - { Ref: DependenciesLambdaLayer }
 

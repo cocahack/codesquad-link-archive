@@ -19,12 +19,13 @@ type SlackChannel = {
 };
 
 const auth = new Router();
-const { BASE_URL, INVITATION_SECRET, AUTH_SECRET } = process.env;
+const { BASE_URL, INVITATION_SECRET, AUTH_SECRET, ENTER_PATH } = process.env;
 
-if (!(BASE_URL && INVITATION_SECRET && AUTH_SECRET)) {
+if (!(BASE_URL && INVITATION_SECRET && AUTH_SECRET && ENTER_PATH)) {
   const error = new Error();
   error.name = 'EnvVariablesNotExist';
   error.message = 'Secret key for JWT is missing.';
+  throw error;
 }
 
 /**
@@ -67,7 +68,7 @@ auth.post('/register', async (ctx) => {
         unfurl_links: false,
         username: SLACK_BOT_NAME,
         text: INVITE_MESSAGE(
-          `${BASE_URL}/api/auth/enter?${INVITATION_QUERY_NAME}=${invitation}`,
+          `${BASE_URL}/${ENTER_PATH}?${INVITATION_QUERY_NAME}=${invitation}`,
         ),
         channel: dmChannel.id,
       });
@@ -76,11 +77,11 @@ auth.post('/register', async (ctx) => {
     } else {
       const err = makeError('Fail to open the DM channel.', 'SlackError');
       console.log(err);
-      ctx.throw(503, err);
+      ctx.throw(500, err);
     }
   } catch (e) {
     console.log(e);
-    ctx.throw(503, e);
+    ctx.throw(500, e);
   }
 });
 

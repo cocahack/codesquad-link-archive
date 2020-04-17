@@ -18,7 +18,8 @@ users.get('/', authorized, async (ctx) => {
       users,
     };
   } catch (e) {
-    ctx.throw(503, e);
+    console.error(e);
+    ctx.throw(500, e);
   }
 });
 

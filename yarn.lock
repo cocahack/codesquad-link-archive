@@ -6463,6 +6463,11 @@ serverless-local-schedule@^0.1.6:
   dependencies:
     local-crontab "^0.1.7"
 
+serverless-offline-ssm@^4.1.2:
+  version "4.1.2"
+  resolved "https://registry.yarnpkg.com/serverless-offline-ssm/-/serverless-offline-ssm-4.1.2.tgz#2171732e1f116ee853930b6207c3f592418ceca0"
+  integrity sha512-021rxV3zPp2+9cVnjKN1ycCgE0FZDUZ+HlwiXbmUvfT5hSgTLwn3WGY6TKAOPC7rmmRMXm8Owex+QGADTdeAgA==
+
 serverless-offline@^6.0.0-alpha.67:
   version "6.1.4"
   resolved "https://registry.yarnpkg.com/serverless-offline/-/serverless-offline-6.1.4.tgz#506662526fdd9d640de5bf802573171ce0df67a3"

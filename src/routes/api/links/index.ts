@@ -30,11 +30,13 @@ links.get('/', authorized, async (ctx) => {
       links.push(link);
     }
 
+    ctx.status = 200;
     ctx.body = {
       links,
     };
   } catch (e) {
-    ctx.throw(503, e);
+    console.error(e);
+    ctx.throw(500, e);
   }
 });
 

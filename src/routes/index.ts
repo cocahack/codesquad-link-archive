@@ -3,7 +3,7 @@ import api from './api';
 
 const routes = new Router();
 
-routes.use('/api', api.routes());
+routes.use('/v1', api.routes());
 routes.get('/', ctx => {
   ctx.body = 'hello world!';
 });
