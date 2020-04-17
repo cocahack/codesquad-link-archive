@@ -26,26 +26,12 @@ jobs:
       run: |
         yarn
         
-    - run: yarn workspace lambda test
-      env:
-        CI: true
-        SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
-        REGION: ${{ secrets.REGION }}
+    - run: yarn test
 
     - name: Install serverless CLI
       run: |
         npm i -g serverless
 
-    - name: Build projects
+    - name: Build test
       run: |
-        yarn workspaces run build
-      env:
-        CI: true
-        SLACK_TOKEN: ${{ secrets.SLACK_TOKEN }}
-        REGION: ${{ secrets.REGION }}
-        AWS_ACCESS_KEY_ID: ${{ secrets.AWS_ACCESS_KEY_ID }}
-        AWS_SECRET_ACCESS_KEY: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
-        AUTH_SECRET: ${{ secrets.AUTH_SECRET }}
-        LINK_SECRET: ${{ secrets.LINK_SECRET }}
-        BASE_URL: ${{ secrets.BASE_URL }}
-
+        yarn build
