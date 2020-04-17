@@ -36,7 +36,6 @@ custom:
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
-  - serverless-dotenv-plugin
   - serverless-local-schedule
   - serverless-offline
 

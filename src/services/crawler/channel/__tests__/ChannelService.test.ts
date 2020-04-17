@@ -1,7 +1,6 @@
 import { Channel } from 'model/Channel';
 import ChannelService from '../ChannelService';
-import ChannelDao from '../ChannelDao';
-import { WebClient } from '@slack/web-api';
+
 jest.mock('../ChannelDao');
 jest.mock('@slack/web-api');
 
@@ -10,7 +9,7 @@ describe('ChannelService', () => {
   let channelDao;
 
   beforeAll(() => {
-    channelDao = new ChannelDao(new WebClient());
+    channelDao = {};
     channelService = new ChannelService(channelDao);
   });
 

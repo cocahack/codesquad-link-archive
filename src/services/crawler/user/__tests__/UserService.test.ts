@@ -1,6 +1,4 @@
 import UserService from '../UserService';
-import UserDao from '../UserDao';
-import { WebClient } from '@slack/web-api';
 import { User } from 'model/User';
 
 jest.mock('../UserDao');
@@ -11,7 +9,7 @@ describe('UserService', () => {
   let userDao;
 
   beforeAll(() => {
-    userDao = new UserDao(new WebClient());
+    userDao = {};
     userService = new UserService(userDao);
   });
 
