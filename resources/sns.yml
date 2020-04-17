@@ -6,4 +6,4 @@ Resources:
       DisplayName: Crawler occurred failure!
       Subscription:
         - protocol: email
-          endpoint: ${ssm:/squadref-v1/failure-endpoint}
+          endpoint: ${self:custom.cralwerFailureEndpoint}

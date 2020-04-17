@@ -16,6 +16,7 @@ custom:
   linkTableName: ${self:provider.stage}-links
 
   cralwerFailureTopicName: ${self:provider.stage}-crawler-failure-alarm
+  cralwerFailureEndpoint: ${ssm:/squadref-v1/failure-endpoint}
 
   dynamodb:
     stages:
