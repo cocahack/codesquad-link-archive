@@ -7,7 +7,7 @@ service:
 custom:
   webpack:
     webpackConfig: 'webpack.config.js'
-    includeModules: true
+    includeModules: false
     packager: 'yarn'
     excludeFiles: src/**/*.test.js
 
@@ -75,6 +75,15 @@ provider:
 package:
   individually: true
 
+layers:
+  dependencies:
+    path: ./layer/nodejs
+    compatibleRuntimes:
+      - nodejs12.x
+    package:
+      include:
+        - node_modules/**
+
 functions:
 # Crawler Services
   crawler:
@@ -87,6 +96,8 @@ functions:
     destinations:
       onFailure:
         - Ref: CrawlerFailureTopic
+    layers:
+      - { Ref: DependenciesLambdaLayer }
 
   app:
     handler: src/serverless.handler
@@ -97,6 +108,8 @@ functions:
       - http:
           path: /{any+}
           method: ANY
+    layers:
+      - { Ref: DependenciesLambdaLayer }
 
 resources:
   - ${file(resources/dynamodb-table.yml)}
