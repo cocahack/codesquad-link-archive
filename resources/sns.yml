@@ -1,0 +1,9 @@
+Resources:
+  CrawlerFailureTopic:
+    Type: AWS::SNS::Topic
+    Properties:
+      TopicName: ${self:custom.cralwerFailureTopicName}
+      DisplayName: Crawler occurred failure!
+      Subscription:
+        - protocol: email
+          endpoint: ${ssm:/squadref-v1/failure-endpoint}

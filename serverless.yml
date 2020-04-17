@@ -7,13 +7,15 @@ service:
 custom:
   webpack:
     webpackConfig: 'webpack.config.js'
-    includeModules: false
+    includeModules: true
     packager: 'yarn'
     excludeFiles: src/**/*.test.js
 
   channelTableName: ${self:provider.stage}-channels
   userTableName: ${self:provider.stage}-users
   linkTableName: ${self:provider.stage}-links
+
+  cralwerFailureTopicName: ${self:provider.stage}-crawler-failure-alarm
 
   dynamodb:
     stages:
@@ -26,7 +28,7 @@ custom:
       sharedDb: true
 
   variables:
-    LINK_SECRET: ${env:LINK_SECRET}
+    INVITATION_SECRET: ${env:INVITATION_SECRET}
     AUTH_SECRET: ${env:AUTH_SECRET}
     SLACK_TOKEN: ${env:SLACK_TOKEN}
     BASE_URL: ${env:BASE_URL}
@@ -35,14 +37,13 @@ plugins:
   - serverless-webpack
   - serverless-dynamodb-local
   - serverless-dotenv-plugin
-  - serverless-plugin-monorepo
   - serverless-local-schedule
   - serverless-offline
 
 provider:
   name: aws
   runtime: nodejs12.x
-  region: ${env:REGION}
+  region: ap-northeast-2
   stage: ${opt:stage, 'dev'}
   memorySize: 128
   apiGateway:
@@ -51,8 +52,13 @@ provider:
     AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
     STAGE: ${self:provider.stage}
     REGION: ${self:provider.region}
+    INVITATION_SECRET: ${ssm:/squadref-v1/invitation-secret}
+    AUTH_SECRET: ${ssm:/squadref-v1/auth-secret}
+    BASE_URL: ${ssm:/squadref-v1/base-url}
+    CLIENT_BASE_URL: ${ssm:/squadref-v1/client-base-url}
+    NODE_PATH: ${ssm:/squadref-v1/node-path}
+    SLACK_TOKEN: ${ssm:/squadref-v1/slack-token}
     TZ: Asia/Seoul
-    NODE_PATH: "./:/opt/node_modules"
   iamRoleStatements:
     - Effect: Allow
       Action:
@@ -69,15 +75,6 @@ provider:
 package:
   individually: true
 
-layers:
-  dependencies:
-    path: ./layer/nodejs
-    compatibleRuntimes:
-      - nodejs12.x
-    package:
-      include:
-        - node_modules/**
-
 functions:
 # Crawler Services
   crawler:
@@ -87,83 +84,20 @@ functions:
       - schedule:
           rate: cron(0 4 * * ? *)
           timezone: ${self:provider.environment.TZ}
-    environment:
-      SLACK_TOKEN: ${self:custom.variables.SLACK_TOKEN}
-    layers:
-      - { Ref: DependenciesLambdaLayer }
+    destinations:
+      onFailure:
+        - Ref: CrawlerFailureTopic
 
-# Auth Services
-  register:
-    handler: src/services/auth/register.register
-    events:
-      - http: POST register
-    environment:
-      LINK_SECRET: ${self:custom.variables.LINK_SECRET}
-      SLACK_TOKEN: ${self:custom.variables.SLACK_TOKEN}
-    layers:
-      - { Ref: DependenciesLambdaLayer }
-
-  enter:
-    handler: src/services/auth/enter.enter
+  app:
+    handler: src/serverless.handler
     events:
       - http:
-          path: /enter
-          method: GET
-    environment:
-      LINK_SECRET: ${self:custom.variables.LINK_SECRET}
-      AUTH_SECRET: ${self:custom.variables.AUTH_SECRET}
-    layers:
-      - { Ref: DependenciesLambdaLayer }
-
-  authorize:
-    handler: src/services/auth/authorize.authorize
-    environment:
-      AUTH_SECRET: ${self:custom.variables.AUTH_SECRET}
-    layers:
-      - { Ref: DependenciesLambdaLayer }
-
-# API Services
-  getUsers:
-    handler: src/services/api/user/list.list
-    events:
+          path: /
+          method: ANY
       - http:
-          path: /api/users
-          method: GET
-          cors: false
-          authorizer:
-            type: request
-            name: authorize
-    layers:
-      - { Ref: DependenciesLambdaLayer }
-
-  getChannels:
-    handler: src/services/api/channel/list.list
-    events:
-      - http:
-          path: /api/channels
-          method: GET
-          cors: false
-          authorizer:
-            type: request
-            name: authorize
-    layers:
-      - { Ref: DependenciesLambdaLayer }
-
-  getLinks:
-    handler: src/services/api/link/get.get
-    events:
-      - http:
-          path: /api/links
-          method: GET
-          cors: false
-          request:
-            querystrings:
-              date: false
-          authorizer:
-            type: request
-            name: authorize
-    layers:
-      - { Ref: DependenciesLambdaLayer }
+          path: /{any+}
+          method: ANY
 
 resources:
   - ${file(resources/dynamodb-table.yml)}
+  - ${file(resources/sns.yml)}

@@ -6,7 +6,7 @@ const initDataMapper = () => {
   const region = process.env.REGION;
 
   return new DataMapper({
-    client: stage === 'prod' ? new DynamoDB({ region } ) : new DynamoDB({ region: 'us-east-1', endpoint: 'http://localhost:8000'}),
+    client: stage === 'prod' ? new DynamoDB({ region } ) : new DynamoDB({ region: 'us-east-1', endpoint: 'http://localhost:8000' }),
     tableNamePrefix: `${stage}-`,
   });
 };

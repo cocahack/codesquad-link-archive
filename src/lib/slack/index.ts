@@ -1,4 +1,15 @@
 import { WebClient } from '@slack/web-api';
 
-const slackToken = process.env.SLACK_TOKEN;
-export const slackClient = new WebClient(slackToken);
+const createSlackClient = () => {
+  let slackToken: string | undefined = process.env.SLACK_TOKEN;
+
+  if (!slackToken) {
+    throw new Error('Slack token must be set.');
+  }
+
+  return new WebClient(slackToken);
+};
+
+const slackClient = createSlackClient();
+
+export default slackClient;
