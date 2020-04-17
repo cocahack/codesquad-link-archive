@@ -1,0 +1,110 @@
+service:
+  name: codesquad-link-archive
+# app and org for use with dashboard.serverless.com
+#app: your-app-name
+#org: your-org-name
+
+custom:
+  webpack:
+    webpackConfig: 'webpack.config.js'
+    includeModules: false
+    packager: 'yarn'
+    excludeFiles: src/**/*.test.js
+
+  channelTableName: ${self:provider.stage}-channels
+  userTableName: ${self:provider.stage}-users
+  linkTableName: ${self:provider.stage}-links
+
+  cralwerFailureTopicName: ${self:provider.stage}-crawler-failure-alarm
+  cralwerFailureEndpoint: ${ssm:/squadref-v1/failure-endpoint}
+
+  dynamodb:
+    stages:
+      - dev
+      - test
+    start:
+      port: 8000
+      inMemory: true
+      migrate: true
+      sharedDb: true
+
+plugins:
+  - serverless-webpack
+  - serverless-dynamodb-local
+  - serverless-local-schedule
+  - serverless-offline
+
+provider:
+  name: aws
+  runtime: nodejs12.x
+  region: ap-northeast-2
+  stage: ${opt:stage, 'dev'}
+  memorySize: 128
+  apiGateway:
+    minimumCompressionSize: 1024 # Enable gzip compression for responses > 1 KB
+  environment:
+    AWS_NODEJS_CONNECTION_REUSE_ENABLED: 1
+    STAGE: ${self:provider.stage}
+    REGION: ${self:provider.region}
+    INVITATION_SECRET: ${ssm:/squadref-v1/invitation-secret}
+    AUTH_SECRET: ${ssm:/squadref-v1/auth-secret}
+    BASE_URL: ${ssm:/squadref-v1/base-url}
+    CLIENT_BASE_URL: ${ssm:/squadref-v1/client-base-url}
+    NODE_PATH: ${ssm:/squadref-v1/node-path}
+    SLACK_TOKEN: ${ssm:/squadref-v1/slack-token}
+    TZ: Asia/Seoul
+  iamRoleStatements:
+    - Effect: Allow
+      Action:
+        - dynamodb:Query
+        - dynamodb:Scan
+        - dynamodb:GetItem
+        - dynamodb:PutItem
+        - dynamodb:UpdateItem
+        - dynamodb:DeleteItem
+        - dynamodb:BatchWriteItem
+        - dynamodb:BatchGetItem
+      Resource: "arn:aws:dynamodb:${self:provider.region}:*:table/*"
+
+package:
+  individually: true
+
+layers:
+  dependencies:
+    path: ./layer/nodejs
+    compatibleRuntimes:
+      - nodejs12.x
+    package:
+      include:
+        - node_modules/**
+
+functions:
+# Crawler Services
+  crawler:
+    handler: src/services/crawler/index.crawl
+    timeout: 20
+    events:
+      - schedule:
+          rate: cron(0 4 * * ? *)
+          timezone: ${self:provider.environment.TZ}
+    destinations:
+      onFailure:
+        - Ref: CrawlerFailureTopic
+    layers:
+      - { Ref: DependenciesLambdaLayer }
+
+  app:
+    handler: src/serverless.handler
+    events:
+      - http:
+          path: /
+          method: ANY
+      - http:
+          path: /{any+}
+          method: ANY
+    layers:
+      - { Ref: DependenciesLambdaLayer }
+
+resources:
+  - ${file(resources/dynamodb-table.yml)}
+  - ${file(resources/sns.yml)}
