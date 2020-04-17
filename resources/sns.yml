@@ -5,5 +5,5 @@ Resources:
       TopicName: ${self:custom.cralwerFailureTopicName}
       DisplayName: Crawler occurred failure!
       Subscription:
-        - protocol: email
-          endpoint: ${self:custom.cralwerFailureEndpoint}
+        - Protocol: email
+          Endpoint: ${self:custom.cralwerFailureEndpoint}
