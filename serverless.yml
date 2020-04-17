@@ -27,12 +27,6 @@ custom:
       migrate: true
       sharedDb: true
 
-  variables:
-    INVITATION_SECRET: ${env:INVITATION_SECRET}
-    AUTH_SECRET: ${env:AUTH_SECRET}
-    SLACK_TOKEN: ${env:SLACK_TOKEN}
-    BASE_URL: ${env:BASE_URL}
-
 plugins:
   - serverless-webpack
   - serverless-dynamodb-local
