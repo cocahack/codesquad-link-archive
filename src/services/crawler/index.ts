@@ -1,7 +1,7 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import Context from 'services/crawler/configuration';
-import { User } from 'lib/model/User';
-import { Channel } from 'lib/model/Channel';
+import { User } from 'model/User';
+import { Channel } from 'model/Channel';
 import 'source-map-support/register';
 
 export const crawl: APIGatewayProxyHandler = async (event, _context) => {

@@ -1,5 +1,5 @@
 import ChannelDao from 'services/crawler/channel/ChannelDao';
-import { Channel } from 'lib/model/Channel';
+import { Channel } from 'model/Channel';
 
 export default class ChannelService {
   constructor(private readonly channelDao: ChannelDao) {}

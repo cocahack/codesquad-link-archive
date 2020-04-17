@@ -1,4 +1,4 @@
-import { Channel } from 'lib/model/Channel';
+import { Channel } from 'model/Channel';
 import ChannelService from '../ChannelService';
 import ChannelDao from '../ChannelDao';
 import { WebClient } from '@slack/web-api';

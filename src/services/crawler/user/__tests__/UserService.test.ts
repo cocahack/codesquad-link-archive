@@ -1,7 +1,7 @@
 import UserService from '../UserService';
 import UserDao from '../UserDao';
 import { WebClient } from '@slack/web-api';
-import { User } from 'lib/model/User';
+import { User } from 'model/User';
 
 jest.mock('../UserDao');
 jest.mock('@slack/web-api');

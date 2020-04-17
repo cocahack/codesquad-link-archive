@@ -5,8 +5,8 @@ import Element = Slack.Conversation.Element;
 import Attachment = Slack.Conversation.Attachment;
 import * as moment from 'moment';
 import { getDateFromUnix } from 'lib/datetime';
-import { LinkMetadata } from 'lib/model/LinkMetadata';
-import { Link } from 'lib/model/Link';
+import { LinkMetadata } from 'model/LinkMetadata';
+import { Link } from 'model/Link';
 
 const makeLinks = (slackMessage: SlackMessage, channelId: string): Link[] => {
   const linkElements = extractLinkElements(slackMessage.blocks);
