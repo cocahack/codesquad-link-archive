@@ -4,6 +4,7 @@ import { Context, Middleware } from 'koa';
 
 import { JWT_ISSUER } from './constants';
 import { User } from '../model/User';
+import { JwtPayload } from './jwt/types';
 
 const { INVITATION_SECRET, AUTH_SECRET } = process.env;
 
@@ -88,8 +89,9 @@ export const consumeUser: Middleware = async (ctx: Context, next) => {
     if (!accessToken) {
       return next();
     }
-    const accessTokenData = await decodeToken<User>(accessToken, AUTH_SECRET);
+    const accessTokenData = await decodeToken<User & JwtPayload>(accessToken, AUTH_SECRET);
     ctx.state.userId = accessTokenData.userId;
+    ctx.state.userPayload = accessTokenData;
     // refresh token when life < 30mins
     // const diff = accessTokenData.exp * 1000 - new Date().getTime();
     // if (diff < 1000 * 60 * 30 && refreshToken) {
