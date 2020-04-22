@@ -19,9 +19,9 @@ type SlackChannel = {
 };
 
 const auth = new Router();
-const { BASE_URL, INVITATION_SECRET, AUTH_SECRET, ENTER_PATH } = process.env;
+const { BASE_URL, CLIENT_BASE_URL, INVITATION_SECRET, AUTH_SECRET } = process.env;
 
-if (!(BASE_URL && INVITATION_SECRET && AUTH_SECRET && ENTER_PATH)) {
+if (!(BASE_URL && INVITATION_SECRET && AUTH_SECRET )) {
   const error = new Error();
   error.name = 'EnvVariablesNotExist';
   error.message = 'Secret key for JWT is missing.';
@@ -31,7 +31,7 @@ if (!(BASE_URL && INVITATION_SECRET && AUTH_SECRET && ENTER_PATH)) {
 /**
  * Send an invitation via Slack.
  *
- * POST /api/v1/auth/register
+ * POST /v1/auth/register
  * {
  *   email: "test@cocahcack.me'
  * }
@@ -53,8 +53,6 @@ auth.post('/register', async (ctx) => {
       subject: 'invitation_token',
     });
 
-    console.log(invitation);
-
     const dmChannel: unknown = (
       await slackClient.conversations.open({
         users: user.userId,
@@ -68,7 +66,7 @@ auth.post('/register', async (ctx) => {
         unfurl_links: false,
         username: SLACK_BOT_NAME,
         text: INVITE_MESSAGE(
-          `${BASE_URL}/${ENTER_PATH}?${INVITATION_QUERY_NAME}=${invitation}`,
+          `${CLIENT_BASE_URL}/enter?${INVITATION_QUERY_NAME}=${invitation}`,
         ),
         channel: dmChannel.id,
       });
@@ -85,17 +83,12 @@ auth.post('/register', async (ctx) => {
   }
 });
 
-auth.get('/enter', async (ctx) => {
+auth.post('/enter', async (ctx) => {
   try {
-    const invitation = ctx.request.query[INVITATION_QUERY_NAME];
+    const { invitation } = ctx.request.body;
     const userPayload = await decodeToken<User & JwtPayload>(invitation, INVITATION_SECRET);
 
-    const user: User = {
-      userId: userPayload.userId,
-      userImage: userPayload.userImage,
-      userName: userPayload.userName,
-      email: userPayload.email,
-    };
+    const user: User = extractUserFromPayload(userPayload);
 
     const accessToken = await generateToken(user, AUTH_SECRET, {
       expiresIn: '1h',
@@ -126,6 +119,21 @@ auth.get('/enter', async (ctx) => {
   }
 });
 
+auth.post('/login', (ctx) => {
+  if (!ctx.state.userId) {
+    ctx.status = 401;
+    ctx.body = {
+      message: 'NOT_AUTHORIZED'
+    };
+    return;
+  } else {
+    ctx.status = 200;
+    ctx.body = {
+      user: extractUserFromPayload(ctx.state.userPayload),
+    };
+  }
+});
+
 const getUserFromEmail = async (email?: string): Promise<User | undefined> => {
   if (!email) {
     return;
@@ -150,6 +158,15 @@ const getUserFromEmail = async (email?: string): Promise<User | undefined> => {
   } catch (e) {
     throw e;
   }
+};
+
+const extractUserFromPayload =  <T extends User & JwtPayload>(payload: T): User => {
+  return {
+    userId: payload.userId,
+    userName: payload.userName,
+    email: payload.email,
+    userImage: payload.userImage,
+  };
 };
 
 // Custom type guard function for narrowing the unknown Type

@@ -96,7 +96,7 @@ functions:
           timezone: ${self:provider.environment.TZ}
     destinations:
       onFailure:
-        - { Ref: CrawlerFailureTopic }
+        - Ref: CrawlerFailureTopic
     layers:
       - { Ref: DependenciesLambdaLayer }
 
