@@ -8,14 +8,15 @@ It provides users who use the free plan with links that cannot be viewed after a
 
 ## Architecture
 
-![architecture](./images/cla-architecture.jpg)
+![architecture](./images/sla-architecture.jpg)
 
 ## Project Stack
 
 - Node.js
 - TypeScript
+- koa.js
 - dynamodb-data-mapper-js
-- React.js
+- Serverless Framework
 - AWS
     - Lambda
     - API Gateway
