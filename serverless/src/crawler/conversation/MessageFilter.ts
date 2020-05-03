@@ -1,4 +1,4 @@
-import { Slack } from 'services/crawler/types';
+import { Slack } from '../types';
 import SlackMessage = Slack.Conversation.SlackMessage;
 
 export default class MessageFilter {

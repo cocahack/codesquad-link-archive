@@ -1,12 +1,12 @@
-import { Slack } from 'services/crawler/types';
+import { Slack } from '../types';
 import SlackMessage = Slack.Conversation.SlackMessage;
 import Block = Slack.Conversation.Block;
 import Element = Slack.Conversation.Element;
 import Attachment = Slack.Conversation.Attachment;
 import * as moment from 'moment';
-import { getDateFromUnix } from 'lib/datetime';
-import { LinkMetadata } from '../serverless/src/model/LinkMetadata';
-import { Link } from '../serverless/src/model/Link';
+import { getDateFromUnix } from '../../lib/datetime';
+import { LinkMetadata } from '../../model/LinkMetadata';
+import { Link } from '../../model/Link';
 
 const makeLinks = (slackMessage: SlackMessage, channelId: string): Link[] => {
   const linkElements = extractLinkElements(slackMessage.blocks);

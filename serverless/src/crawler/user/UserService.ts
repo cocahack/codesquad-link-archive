@@ -1,5 +1,5 @@
-import UserDao from '../serverless/src/services/crawler/user/UserDao';
-import { User } from '../serverless/src/model/User';
+import UserDao from './UserDao';
+import { User } from '../../model/User';
 
 export default class UserService {
   constructor(private readonly userDao: UserDao) {}
