@@ -7,7 +7,7 @@
     "test": "jest",
     "test:cov": "jest --coverage",
     "build": "sls package",
-    "deploy": "yarn --cwd ./layer/nodejs && sls deploy -s $(echo $STAGE)"
+    "deploy": "yarn --cwd layer/nodejs && sls deploy -s $(echo $STAGE)"
   },
   "dependencies": {
     "@aws/dynamodb-data-mapper": "^0.7.3",

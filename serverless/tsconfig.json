@@ -13,7 +13,7 @@
     "sourceMap": true,
     "target": "es2017",
     "outDir": "lib",
-    "baseUrl": "./src"
+    "baseUrl": "../src"
   },
   "include": ["./**/*.ts"],
   "exclude": [

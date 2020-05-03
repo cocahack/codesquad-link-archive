@@ -1,6 +1,6 @@
-import MessageDao from 'services/crawler/conversation/MessageDao';
-import makeLinks from 'services/crawler/conversation/makeLinks';
-import { Link } from 'model/Link';
+import MessageDao from '../serverless/src/services/crawler/conversation/MessageDao';
+import makeLinks from '../serverless/src/services/crawler/conversation/makeLinks';
+import { Link } from '../serverless/src/model/Link';
 
 export default class MessageService {
   constructor(private readonly messageDao: MessageDao) {}

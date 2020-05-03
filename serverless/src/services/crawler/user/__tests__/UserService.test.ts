@@ -1,5 +1,5 @@
 import UserService from '../UserService';
-import { User } from 'model/User';
+import { User } from 'serverless/src/model/User';
 
 jest.mock('../UserDao');
 jest.mock('@slack/web-api');

@@ -1,4 +1,4 @@
-import { Channel } from 'model/Channel';
+import { Channel } from 'serverless/src/model/Channel';
 import ChannelService from '../ChannelService';
 
 jest.mock('../ChannelDao');

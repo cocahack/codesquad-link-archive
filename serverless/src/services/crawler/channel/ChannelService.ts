@@ -1,5 +1,5 @@
-import ChannelDao from 'services/crawler/channel/ChannelDao';
-import { Channel } from 'model/Channel';
+import ChannelDao from '../serverless/src/services/crawler/channel/ChannelDao';
+import { Channel } from '../serverless/src/model/Channel';
 
 export default class ChannelService {
   constructor(private readonly channelDao: ChannelDao) {}

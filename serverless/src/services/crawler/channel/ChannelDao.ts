@@ -1,6 +1,6 @@
 import { WebClient } from '@slack/web-api';
 import { Slack } from 'services/crawler/types';
-import ChannelFilter from 'services/crawler/channel/ChannelFilter';
+import ChannelFilter from '../serverless/src/services/crawler/channel/ChannelFilter';
 import ChannelListsResponse = Slack.Channel.ChannelListsResponse;
 
 export default class ChannelDao {
