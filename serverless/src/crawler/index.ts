@@ -14,15 +14,45 @@ export const crawl: APIGatewayProxyHandler = async (event, _context) => {
   const channels = await Context.channelService.getLists();
 
   console.log('gathering links');
-  const promises = channels.map(channel =>
+  const promises = channels.map((channel) =>
     Context.messageService.getLists(channel.channelId),
   );
   const links = (await Promise.all(promises)).flat();
 
   console.log('attempt persisting all entities');
 
-  await db.collection('users').insertMany(users);
-  await db.collection('channels').insertMany(channels);
+  const userUpdateQueries = users.map((user) => {
+    return {
+      updateOne: {
+        filter: { userId: user.userId },
+        update: {
+          $set: {
+            userImage: user.userImage,
+            email: user.email,
+            userName: user.userName,
+          },
+        },
+        upsert: true,
+      },
+    };
+  });
+
+  const channelUpdateQueries = channels.map((channel) => {
+    return {
+      updateOne: {
+        filter: { channelId: channel.channelId },
+        update: {
+          $set: {
+            channelName: channel.channelName,
+          },
+        },
+        upsert: true,
+      },
+    };
+  });
+
+  await db.collection('users').bulkWrite(userUpdateQueries);
+  await db.collection('channels').bulkWrite(channelUpdateQueries);
   await db.collection('links').insertMany(links);
 
   await Context.mongo.close();
@@ -39,4 +69,3 @@ export const crawl: APIGatewayProxyHandler = async (event, _context) => {
     ),
   };
 };
-
