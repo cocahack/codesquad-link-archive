@@ -1,12 +1,16 @@
 import { APIGatewayProxyHandler } from 'aws-lambda';
 import 'source-map-support/register';
-
 import init from './configuration';
 
 export const crawl: APIGatewayProxyHandler = async (event, _context) => {
   const Context = await init();
 
-  const db = Context.mongo.db('domain');
+  let db;
+  if (process.env.NODE_ENV === 'development') {
+    db = Context.mongo.db('domain');
+  } else {
+    db = Context.mongo.db();
+  }
 
   console.log('gathering users');
   const users = await Context.userService.getLists();
@@ -24,11 +28,13 @@ export const crawl: APIGatewayProxyHandler = async (event, _context) => {
   const userUpdateQueries = users.map((user) => {
     return {
       updateOne: {
-        filter: { userId: user.userId },
+        filter: { 
+          userId: user.userId,
+          email: user.email,
+        },
         update: {
           $set: {
             userImage: user.userImage,
-            email: user.email,
             userName: user.userName,
           },
         },

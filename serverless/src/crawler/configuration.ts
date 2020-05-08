@@ -41,11 +41,7 @@ const init = async () => {
 };
 
 const connectMongoDB = (): Promise<MongoClient> => {
-  const user = encodeURIComponent('root');
-  const password = encodeURIComponent('example');
-  const authMechanism = 'DEFAULT';
-
-  return MongoClient.connect(`mongodb://${user}:${password}@localhost:27017/?authMechanism=${authMechanism}`);
+  return MongoClient.connect(process.env.MONGO_URI);
 };
 
 export default init;

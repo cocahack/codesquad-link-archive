@@ -247,7 +247,7 @@ dist
 out
 gen
 
-.webpack
+**/.webpack
 /packages/**/.env
 /packages/**/.webpack/
 

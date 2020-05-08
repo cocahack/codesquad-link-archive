@@ -53,6 +53,7 @@ provider:
     NODE_PATH: ${ssm:/squadref-v1/node-path}
     REGION: ${self:provider.region}
     SLACK_TOKEN: ${ssm:/squadref-v1/slack-token}
+    MONGO_URI: ${ssm:/squadref-v1/mongo-uri}
     STAGE: ${self:provider.stage}
     TZ: Asia/Seoul
   iamRoleStatements:
