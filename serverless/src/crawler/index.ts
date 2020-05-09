@@ -5,12 +5,7 @@ import init from './configuration';
 export const crawl: APIGatewayProxyHandler = async (event, _context) => {
   const Context = await init();
 
-  let db;
-  if (process.env.NODE_ENV === 'development') {
-    db = Context.mongo.db('domain');
-  } else {
-    db = Context.mongo.db();
-  }
+  const db = Context.mongo.db();
 
   console.log('gathering users');
   const users = await Context.userService.getLists();

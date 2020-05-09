@@ -41,7 +41,9 @@ const init = async () => {
 };
 
 const connectMongoDB = (): Promise<MongoClient> => {
-  return MongoClient.connect(process.env.MONGO_URI);
+  return MongoClient.connect(process.env.MONGO_URI, {
+    useUnifiedTopology: true,
+  });
 };
 
 export default init;
