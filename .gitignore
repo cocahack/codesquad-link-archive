@@ -252,6 +252,7 @@ gen
 /packages/**/.webpack/
 
 *log*
+!logger.ts
 
 .DS_Store
 ._.DS_Store
