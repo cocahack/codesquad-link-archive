@@ -1,9 +1,7 @@
-import { config } from 'dotenv';
+require('dotenv').config();
 import * as mongoose from 'mongoose';
 import app from './app';
 require('source-map-support').install();
-
-config();
 
 const mongoUri = process.env.MONGO_URI;
 
