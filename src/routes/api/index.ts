@@ -1,4 +1,5 @@
 import * as Router from '@koa/router';
+import auth from './auth/index';
 import channels from './channels';
 import links from './links';
 import users from './users';
@@ -12,6 +13,7 @@ v1.get('/check', ctx => {
   };
 });
 
+v1.use('/auth', auth.routes());
 v1.use('/users', users.routes());
 v1.use('/channels', channels.routes());
 v1.use('/links', links.routes());

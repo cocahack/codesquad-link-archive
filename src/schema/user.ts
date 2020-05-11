@@ -14,4 +14,6 @@ const userSchema = new Schema({
   email: { type: String, required: true },
 });
 
-export default model<User>('users', userSchema);
+const UserModel = model<User>('users', userSchema);
+
+export default UserModel;
