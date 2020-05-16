@@ -1,12 +1,12 @@
 import * as Router from '@koa/router';
 import * as crypto from 'crypto';
-import { ACCESS_TOKEN_NAME, DEVELOPMENT_ENV, DOMAIN_NAME, INVITE_MESSAGE, SLACK_BOT_NAME } from '../../../lib/constants';
+import { INVITE_MESSAGE, SLACK_BOT_NAME } from '../../../lib/constants';
 import { makeError } from '../../../lib/error';
-import redis from '../../../lib/redis';
+import { checkCode, saveCode } from '../../../lib/redis/code-namespace';
 import slackClient from '../../../lib/slack';
-import { generateToken } from '../../../lib/token';
+import { createUserTokens, setTokenToCookie } from '../../../lib/token';
 import registerMiddleware from '../../../middlewares/auth/register';
-import { User } from '../../../schema/user';
+import UserModel, { User } from '../../../schema/user';
 
 type SlackChannel = {
   id: string;
@@ -20,15 +20,7 @@ type AuthRouterState = {
 
 const auth = new Router<AuthRouterState>();
 
-const { CLIENT_BASE_URL, AUTH_SECRET } = process.env;
-// console.dir(process.env, { depth: 4 });
-
-// if (!(CLIENT_BASE_URL && INVITATION_SECRET && AUTH_SECRET )) {
-//   const error = new Error();
-//   error.name = 'EnvVariablesNotExist';
-//   error.message = 'The Secret key for JWT is missing.';
-//   throw error;
-// }
+const { CLIENT_BASE_URL } = process.env;
 
 /**
  * Send an invitation via Slack.
@@ -41,13 +33,9 @@ const { CLIENT_BASE_URL, AUTH_SECRET } = process.env;
 auth.post('/register', registerMiddleware, async (ctx) => {
   try {
     const { user } = ctx.state;
+    const code = crypto.randomBytes(20).toString('hex');
 
-    const key = crypto.randomBytes(20).toString('hex');
-
-    await redis.multi()
-      .hmset(key, extractUserFromPayload(user))
-      .expire(key, 60 * 10)
-      .exec();
+    await saveCode(code, user.userId);
 
     const dmChannel: unknown = (
       await slackClient.conversations.open({
@@ -60,7 +48,7 @@ auth.post('/register', registerMiddleware, async (ctx) => {
         unfurl_links: false,
         username: SLACK_BOT_NAME,
         text: INVITE_MESSAGE(
-          `${CLIENT_BASE_URL}/enter?key=${key}`,
+          `${CLIENT_BASE_URL}/entrance?code=${code}`,
         ),
         channel: dmChannel.id,
       });
@@ -77,43 +65,16 @@ auth.post('/register', registerMiddleware, async (ctx) => {
   }
 });
 
-auth.post('/enter', async (ctx) => {
+auth.post('/entrance', async (ctx) => {
   try {
-    const { key } = ctx.request.query;
+    const { code } = ctx.request.query;
 
-    const result = await redis.multi()
-      .hgetall(key)
-      .del(key)
-      .exec();
+    const userId: User['userId'] = await checkCode(code);
+    const user = await UserModel.findOne({ userId });
 
-    /*
-    * A transaction fails.
-    * The first item in each array is an error object.
-    */
-    if(result[0][0] || result[1][0] || result[1][1] !== 1) {
-      ctx.throw(500, new Error('Cannot fetch from REDIS.'));
-    } 
+    const authTokens = await createUserTokens(user);
 
-    const user = extractUserFromPayload(result[0][1]);
-
-    const accessToken = await generateToken(user, AUTH_SECRET, {
-      expiresIn: '1h',
-      subject: ACCESS_TOKEN_NAME,
-    });
-
-    ctx.cookies.set(ACCESS_TOKEN_NAME, accessToken, {
-      httpOnly: true,
-      maxAge: 1000 * 60 * 60,
-      domain: DOMAIN_NAME,
-    });
-
-    if (process.env.NODE_ENV === DEVELOPMENT_ENV) {
-      ctx.cookies.set(ACCESS_TOKEN_NAME, accessToken, {
-        httpOnly: true,
-        maxAge: 1000 * 60 * 60,
-        secure: false,
-      });
-    }
+    setTokenToCookie(ctx, authTokens);
 
     ctx.status = 200;
     ctx.body = {
@@ -141,7 +102,6 @@ auth.post('/login', (ctx) => {
 });
 
 const extractUserFromPayload =  <T extends User>(payload: T) => {
-  console.dir(payload, {depth: 2});
   return {
     userId: payload.userId,
     userName: payload.userName,

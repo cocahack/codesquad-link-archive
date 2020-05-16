@@ -15,3 +15,4 @@ export const INVITE_MESSAGE = (url: string) =>
 export const JWT_ISSUER = 'cocahack.me';
 export const INVITATION_QUERY_NAME = 'invitation';
 export const ACCESS_TOKEN_NAME = 'access_token';
+export const REFRESH_TOKEN_NAME = 'refresh_token';
