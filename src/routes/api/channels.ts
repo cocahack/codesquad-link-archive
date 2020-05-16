@@ -1,5 +1,5 @@
 import * as Router from '@koa/router';
-import Channel from '../../../schema/channel';
+import Channel from '../../schema/channel';
 
 const channels = new Router();
 

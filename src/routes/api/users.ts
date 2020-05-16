@@ -1,5 +1,5 @@
 import * as Router from '@koa/router';
-import User from '../../../schema/User';
+import User from '../../schema/User';
 
 const users = new Router();
 

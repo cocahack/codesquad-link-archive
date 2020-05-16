@@ -1,12 +1,12 @@
 import * as Router from '@koa/router';
 import * as crypto from 'crypto';
-import { INVITE_MESSAGE, SLACK_BOT_NAME } from '../../../lib/constants';
-import { makeError } from '../../../lib/error';
-import { checkCode, saveCode } from '../../../lib/redis/code-namespace';
-import slackClient from '../../../lib/slack';
-import { createUserTokens, setTokenToCookie } from '../../../lib/token';
-import registerMiddleware from '../../../middlewares/auth/register';
-import UserModel, { User } from '../../../schema/user';
+import { INVITE_MESSAGE, SLACK_BOT_NAME } from '../../lib/constants';
+import { makeError } from '../../lib/error';
+import { checkCode, saveCode } from '../../lib/redis/code-namespace';
+import slackClient from '../../lib/slack';
+import { createUserTokens, setTokenToCookie } from '../../lib/token';
+import registerMiddleware from '../../middlewares/auth/register';
+import UserModel, { User } from '../../schema/user';
 
 type SlackChannel = {
   id: string;

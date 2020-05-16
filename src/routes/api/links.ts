@@ -1,5 +1,5 @@
 import * as Router from '@koa/router';
-import Link from '../../../schema/link';
+import Link from '../../schema/link';
 
 const links = new Router();
 

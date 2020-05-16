@@ -1,5 +1,5 @@
 import * as Router from '@koa/router';
-import auth from './auth/index';
+import auth from './auth';
 import channels from './channels';
 import links from './links';
 import users from './users';
