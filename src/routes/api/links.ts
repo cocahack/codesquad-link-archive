@@ -1,11 +1,12 @@
 import * as Router from '@koa/router';
 import Link from '../../schema/link';
+import authorized from '../../middlewares/auth/authorized';
 
 const links = new Router();
 
 const PAGE_SIZE = 10;
 
-links.get('/', async (ctx) => {
+links.get('/', authorized, async (ctx) => {
   try {
     const page = ctx.request.query.page || 1;
 

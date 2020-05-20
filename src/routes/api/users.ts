@@ -1,9 +1,10 @@
 import * as Router from '@koa/router';
+import authorized from '../../middlewares/auth/authorized';
 import User from '../../schema/User';
 
 const users = new Router();
 
-users.get('/', async (ctx) => {
+users.get('/', authorized, async (ctx) => {
   try {
     const users = await User.find();
 

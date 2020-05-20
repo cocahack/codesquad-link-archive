@@ -1,9 +1,10 @@
 import * as Router from '@koa/router';
+import authorized from '../../middlewares/auth/authorized';
 import Channel from '../../schema/channel';
 
 const channels = new Router();
 
-channels.get('/', async (ctx) => {
+channels.get('/', authorized, async (ctx) => {
   try {
     const channels = await Channel.find();
 
