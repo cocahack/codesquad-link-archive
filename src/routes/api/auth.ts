@@ -1,16 +1,11 @@
 import * as Router from '@koa/router';
 import * as crypto from 'crypto';
-import { INVITE_MESSAGE, SLACK_BOT_NAME } from '../../lib/constants';
-import { makeError } from '../../lib/error';
 import { checkCode, saveCode } from '../../lib/redis/code-namespace';
-import slackClient from '../../lib/slack';
+import { openDMChannel, sendCodeToUser, SlackChannel } from '../../lib/slack';
 import { createUserTokens, setTokenToCookie } from '../../lib/token';
 import registerMiddleware from '../../middlewares/auth/register';
 import User, { IUser } from '../../schema/User';
 
-type SlackChannel = {
-  id: string;
-};
 
 type AuthRouterState = {
   user: IUser,
@@ -19,8 +14,6 @@ type AuthRouterState = {
 }
 
 const auth = new Router<AuthRouterState>();
-
-const { CLIENT_BASE_URL } = process.env;
 
 /**
  * Send an invitation via Slack.
@@ -37,28 +30,13 @@ auth.post('/register', registerMiddleware, async (ctx) => {
 
     await saveCode(code, user.userId);
 
-    const dmChannel: unknown = (
-      await slackClient.conversations.open({
-        users: user.userId,
-      })
-    ).channel;
+    const dmChannel: SlackChannel = await openDMChannel(user.userId);
+    await sendCodeToUser(dmChannel, code);
 
-    if (isSlackChannelType(dmChannel)) {
-      await slackClient.chat.postMessage({
-        unfurl_links: false,
-        username: SLACK_BOT_NAME,
-        text: INVITE_MESSAGE(
-          `${CLIENT_BASE_URL}/entrance?code=${code}`,
-        ),
-        channel: dmChannel.id,
-      });
-      ctx.status = 204;
-      return;
-    } else {
-      const err = makeError('Fail to open the DM channel.', 'SlackError');
-      console.log(err);
-      ctx.throw(500, err);
-    }
+    ctx.status = 201;
+    ctx.body = {
+      message: 'The verification code has been sent by DM. Please check the message in Slack.'
+    };
   } catch (e) {
     console.log(e);
     ctx.throw(500, e);
@@ -108,11 +86,6 @@ const extractUserFromPayload =  <T extends IUser>(payload: T) => {
     email: payload.email,
     userImage: payload.userImage,
   };
-};
-
-// Custom type guard function for narrowing the unknown Type
-const isSlackChannelType = (value: unknown): value is SlackChannel => {
-  return value['id'];
 };
 
 export default auth;

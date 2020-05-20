@@ -4,16 +4,14 @@ import redis from './redis';
 
 
 export const saveCode = async (code: string, userId: IUser['userId']): Promise<void> => {
-  await redis.multi()
-    .hmset(addNamespacePrefix(code), userId)
-    .expire(code, 60 * 10)
-    .exec();
+  await redis.set(addNamespacePrefix(code), userId, 'MX', 60 * 10);
 }
 
 export const checkCode = async (code: string): Promise<string> => {
   const prependedCode = addNamespacePrefix(code);
+
   const result = await redis.multi()
-  .hgetall(prependedCode)
+  .get(prependedCode)
   .del(prependedCode)
   .exec();
 
