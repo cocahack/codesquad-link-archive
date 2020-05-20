@@ -6,16 +6,16 @@ import { checkCode, saveCode } from '../../lib/redis/code-namespace';
 import slackClient from '../../lib/slack';
 import { createUserTokens, setTokenToCookie } from '../../lib/token';
 import registerMiddleware from '../../middlewares/auth/register';
-import UserModel, { User } from '../../schema/user';
+import User, { IUser } from '../../schema/User';
 
 type SlackChannel = {
   id: string;
 };
 
 type AuthRouterState = {
-  user: User,
+  user: IUser,
   userId?: string,
-  userPayload?: User,
+  userPayload?: IUser,
 }
 
 const auth = new Router<AuthRouterState>();
@@ -69,8 +69,8 @@ auth.post('/entrance', async (ctx) => {
   try {
     const { code } = ctx.request.query;
 
-    const userId: User['userId'] = await checkCode(code);
-    const user = await UserModel.findOne({ userId });
+    const userId: IUser['userId'] = await checkCode(code);
+    const user = await User.findOne({ userId });
 
     const authTokens = await createUserTokens(user);
 
@@ -101,7 +101,7 @@ auth.post('/login', (ctx) => {
   }
 });
 
-const extractUserFromPayload =  <T extends User>(payload: T) => {
+const extractUserFromPayload =  <T extends IUser>(payload: T) => {
   return {
     userId: payload.userId,
     userName: payload.userName,

@@ -1,9 +1,9 @@
-import { User } from '../../schema/user';
+import { IUser } from '../../schema/User';
 import { makeError } from '../error';
 import redis from './redis';
 
 
-export const saveCode = async (code: string, userId: User['userId']): Promise<void> => {
+export const saveCode = async (code: string, userId: IUser['userId']): Promise<void> => {
   await redis.multi()
     .hmset(addNamespacePrefix(code), userId)
     .expire(code, 60 * 10)

@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { SignOptions } from 'jsonwebtoken';
 import { Context, Middleware, Next } from 'koa';
-import UserModel, { User } from '../schema/User';
+import User, { IUser } from '../schema/User';
 import { ACCESS_TOKEN_NAME, DEVELOPMENT_ENV, REFRESH_TOKEN_NAME } from './constants';
 import logger from './logger';
 
@@ -106,7 +106,7 @@ export function setTokenToCookie(
 export const refresh = async (ctx: Context, refreshToken: string) => {
   try {
     const decoded = await decodeToken<RefreshTokenPayload>(refreshToken);
-    const user = await UserModel.findOne({ userId: decoded.userId });
+    const user = await User.findOne({ userId: decoded.userId });
     if (!user) {
       const error = new Error('InvalidUserError');
       throw error;
@@ -180,7 +180,7 @@ export const consumeUser: Middleware = async (ctx: Context, next: Next) => {
   return next();
 };
 
-export const createUserTokens = async (user: User): Promise<AuthTokens> => {
+export const createUserTokens = async (user: IUser): Promise<AuthTokens> => {
   const tokenId = crypto.randomBytes(16).toString('hex');
   const accessToken = await generateToken({
     userId: user.userId,
