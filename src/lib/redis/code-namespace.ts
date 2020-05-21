@@ -1,4 +1,4 @@
-import { IUser } from '../../schema/User';
+import { IUser } from '../../schema/user';
 import { makeError } from '../error';
 import redis from './redis';
 

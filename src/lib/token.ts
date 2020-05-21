@@ -2,7 +2,7 @@ import * as crypto from 'crypto';
 import * as jwt from 'jsonwebtoken';
 import { SignOptions } from 'jsonwebtoken';
 import { Context, Middleware, Next } from 'koa';
-import User, { IUser } from '../schema/User';
+import User, { IUser } from '../schema/user';
 import { ACCESS_TOKEN_NAME, DEVELOPMENT_ENV, REFRESH_TOKEN_NAME } from './constants';
 import logger from './logger';
 

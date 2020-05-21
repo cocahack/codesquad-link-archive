@@ -4,7 +4,7 @@ import { checkCode, saveCode } from '../../lib/redis/code-namespace';
 import { openDMChannel, sendCodeToUser, SlackChannel } from '../../lib/slack';
 import { createUserTokens, setTokenToCookie } from '../../lib/token';
 import registerMiddleware from '../../middlewares/auth/register';
-import User, { IUser } from '../../schema/User';
+import User, { IUser } from '../../schema/user';
 
 
 type AuthRouterState = {

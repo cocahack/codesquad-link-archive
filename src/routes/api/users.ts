@@ -1,6 +1,6 @@
 import * as Router from '@koa/router';
 import authorized from '../../middlewares/auth/authorized';
-import User from '../../schema/User';
+import User from '../../schema/user';
 
 const users = new Router();
 

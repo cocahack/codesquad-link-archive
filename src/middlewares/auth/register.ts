@@ -1,6 +1,6 @@
 import { Middleware } from 'koa';
 import { makeError } from '../../lib/error';
-import User from '../../schema/User';
+import User from '../../schema/user';
 
 const registerMiddleware: Middleware = async (ctx, next) => {
   try {
