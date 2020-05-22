@@ -16,7 +16,7 @@ const isSlackChannelType = (value: unknown): value is SlackChannel => {
 };
 
 export const openDMChannel = async (userId: string): Promise<SlackChannel | undefined> => {
-  const { channel } = await slackClient.conversations.open({ user: userId });
+  const { channel } = await slackClient.conversations.open({ users: userId });
   return isSlackChannelType(channel) ? channel : undefined;
 }
 
@@ -25,7 +25,7 @@ export const sendCodeToUser = async (channel: SlackChannel, code: string) => {
     unfurl_links: false,
     username: SLACK_BOT_NAME,
     text: INVITE_MESSAGE(
-      `${CLIENT_BASE_URL}/entrance?code=${code}`,
+      `${CLIENT_BASE_URL}/enter?code=${code}`,
     ),
     channel: channel.id,
   });

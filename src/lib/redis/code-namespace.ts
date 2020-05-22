@@ -4,7 +4,7 @@ import redis from './redis';
 
 
 export const saveCode = async (code: string, userId: IUser['userId']): Promise<void> => {
-  await redis.set(addNamespacePrefix(code), userId, 'MX', 60 * 10);
+  await redis.set(addNamespacePrefix(code), userId, 'EX', 60 * 10);
 }
 
 export const checkCode = async (code: string): Promise<string> => {

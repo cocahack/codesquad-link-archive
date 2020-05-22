@@ -45,7 +45,7 @@ auth.post('/register', registerMiddleware, async (ctx) => {
 
 auth.post('/entrance', async (ctx) => {
   try {
-    const { code } = ctx.request.query;
+    const { code } = ctx.request.body;
 
     const userId: IUser['userId'] = await checkCode(code);
     const user = await User.findOne({ userId });
